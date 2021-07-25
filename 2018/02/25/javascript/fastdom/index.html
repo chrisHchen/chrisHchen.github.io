@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/static/fastdom/frame.jpg">
 <meta property="article:published_time" content="2018-02-25T20:16:21.000Z">
-<meta property="article:modified_time" content="2021-07-25T13:53:32.112Z">
+<meta property="article:modified_time" content="2021-07-25T23:38:54.462Z">
 <meta property="article:author" content="Chris Chen">
 <meta property="article:tag" content="源码解析">
 <meta name="twitter:card" content="summary">
@@ -24,7 +24,7 @@
     <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
   
   
-    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="shortcut icon" href="https://assets.imedao.com/images/favicon.png">
   
   
     
@@ -110,6 +110,8 @@
 <p>layout 是非常消耗性能和时间的，所以应该尽量避免 js 的执行过程中频繁触发 layout 。特别是在有动画的情况下，太多的 layout 会使得浏览器的刷新频率低于 60fps，出现动画卡顿的现象。具体的原理和细节可以参考这篇文章:</p>
 <p><a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing">Avoid Large, Complex Layouts and Layout Thrashing</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/wilsonpage/fastdom">fastdom</a> 的出现就是为了优化 layout，防止出现 forced synchronous layouts 。</p>
+<span id="more"></span>
+
 <p>源码比较简单，首先 fastdom 库是一个全局单例的库:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">exports</span> = (win.fastdom = win.fastdom || <span class="keyword">new</span> FastDom());</span><br></pre></td></tr></table></figure>
 
@@ -124,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrj9i1dy0000awnd51to6pdz" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrjueqyr00009fngeg939720" data-title="fastdom 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -134,6 +136,20 @@
   </div>
   
     
+<nav id="article-nav">
+  
+    <a href="/2018/03/16/javascript/redux/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          redux 源码分析【4.0.0-beta.2】
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
   
 </article>
 
@@ -156,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
     </div>
   </div>
 
@@ -166,7 +182,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 10px;">源码解析</a>
+      <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a>
     </div>
   </div>
 
@@ -175,7 +191,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -186,6 +202,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/04/24/javascript/webpack-loader/">写一个 webpack loader</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/16/javascript/redux/">redux 源码分析【4.0.0-beta.2】</a>
+          </li>
         
           <li>
             <a href="/2018/02/25/javascript/fastdom/">fastdom 源码解析</a>
