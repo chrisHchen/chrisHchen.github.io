@@ -17,6 +17,8 @@ layout 是非常消耗性能和时间的，所以应该尽量避免 js 的执行
 
 [fastdom](https://github.com/wilsonpage/fastdom) 的出现就是为了优化 layout，防止出现 forced synchronous layouts 。
 
+<!--more-->
+
 源码比较简单，首先 fastdom 库是一个全局单例的库:
 
 ```js
