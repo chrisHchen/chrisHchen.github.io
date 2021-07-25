@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Chris Chen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Chris Chen&#39;s Blog">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Chris Chen">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Chris Chen&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">welcome to my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-javascript/fastdom" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/02/25/javascript/fastdom/" class="article-date">
+  <time class="dt-published" datetime="2018-02-25T20:16:21.000Z" itemprop="datePublished">2018-02-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/25/javascript/fastdom/">fastdom 源码解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="浏览器如何渲染页面"><a href="#浏览器如何渲染页面" class="headerlink" title="浏览器如何渲染页面"></a>浏览器如何渲染页面</h2><p>说到 <a target="_blank" rel="noopener" href="https://github.com/wilsonpage/fastdom">fastdom</a>，就必须先了解浏览器渲染一个页面的流程。通常浏览器渲染页面需要如下的步骤:<br><img src="/static/fastdom/frame.jpg" alt="页面渲染流程图"><br>（其中的 layout 有时候也称为 reflow）</p>
+<p>layout 是非常消耗性能和时间的，所以应该尽量避免 js 的执行过程中频繁触发 layout 。特别是在有动画的情况下，太多的 layout 会使得浏览器的刷新频率低于 60fps，出现动画卡顿的现象。具体的原理和细节可以参考这篇文章:</p>
+<p><a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing">Avoid Large, Complex Layouts and Layout Thrashing</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wilsonpage/fastdom">fastdom</a> 的出现就是为了优化 layout，防止出现 forced synchronous layouts 。</p>
+<p>源码比较简单，首先 fastdom 库是一个全局单例的库:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">exports</span> = (win.fastdom = win.fastdom || <span class="keyword">new</span> FastDom());</span><br></pre></td></tr></table></figure>
+
+<p>fastdom 主要通过管理单例上的 reads 和 writes 两个数组来缓存读(measure)写(mutate) dom 节点两种的操作， 因为这些操作会触发 layout。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FastDom</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="built_in">this</span>;</span><br><span class="line">  self.reads = [];</span><br><span class="line">  self.writes = [];</span><br><span class="line">  self.raf = raf.bind(win); <span class="comment">// test hook</span></span><br><span class="line">  debug(<span class="string">&quot;initialized&quot;</span>, self);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后通过 scheduleFlush 函数在下一帧(requestAnimationFrame)执行数组中的函数 — 先执行 reads 再执行 writes。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// scheduleFlush</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  debug(<span class="string">&quot;flushing reads&quot;</span>, reads.length);</span><br><span class="line">  runTasks(reads);</span><br><span class="line">  debug(<span class="string">&quot;flushing writes&quot;</span>, writes.length);</span><br><span class="line">  runTasks(writes);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  error = e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样所有的读写操作都被分到不同的数组中，然后异步的统一在下一帧(next frame)中执行， 从而保证了 js 执行过程中不出现 forced synchronous layouts 的现象。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrj9i1dy0000awnd51to6pdz" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 10px;">源码解析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/25/javascript/fastdom/">fastdom 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Chris Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
