@@ -75,6 +75,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-python/kmeans" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/26/python/kmeans/" class="article-date">
+  <time class="dt-published" datetime="2018-05-26T22:33:17.000Z" itemprop="datePublished">2018-05-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python-%E7%AE%97%E6%B3%95/">python 算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/26/python/kmeans/">python 实现 k-means 算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="算法基础"><a href="#算法基础" class="headerlink" title="算法基础"></a>算法基础</h2><p>机器学习中有两大类问题，一个是分类，一个是聚类。分类是根据已知类别标号(label)的样本，训练某个分类器，使它能够对未知类别的样本进行分类。属于 <code>supervised learning</code> (监督学习)。而聚类指事先并不知道任何样本的类别标号，而希望通过某种算法来把一组未知类别的样本划分成若干类别，这在机器学习中属于 <code>unsupervised learning</code>（非监督学习）</p>
+<p>而本文要实现的 k-means 算法就是一个比较简单的聚类算法。</p>
+<p>k-means 算法的基本思想是：通过迭代寻找 k 个聚类，使得用这 k 个聚类的均值来代表相应各类样本时所得的总体误差最小。k-means 算法的基础是最小误差平方和准则。</p>
+<p>k-means 算法的代价函数如下：<br><img src="/static/kmeans/losfn.gif"></p>
+<p>x(i) 表示第 i 个样本点，μc(i)表示第 i 个聚类的均值，c 表示某个类别的集合</p>
+<p>我们希望代价函数最小，如果各类内的样本越相似，其与该类均值间的误差平方越小，则各类的误差平方和也越小。</p>
+<p>k-means 算法基本步骤如下：</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/05/26/python/kmeans/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="ckrl9t2l400059cnggnv78way" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python 机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript/webpack-loader" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/04/24/javascript/webpack-loader/" class="article-date">
@@ -115,7 +170,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckrjueqyy00049fngegcphsde" data-title="写一个 webpack loader" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckrl9t2l300049cng5a9c1u11" data-title="写一个 webpack loader" class="article-share-link">Share</a>
       
       
       
@@ -166,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrjueqyv00019fngcd32bpwn" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrl9t2kz00019cngdg0nhymk" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
       
       
       
@@ -218,7 +273,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrjueqyr00009fngeg939720" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrl9t2kv00009cng9kd3hbz4" data-title="fastdom 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -242,7 +297,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python-%E7%AE%97%E6%B3%95/">python 算法</a></li></ul>
     </div>
   </div>
 
@@ -252,7 +307,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python 机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
     </div>
   </div>
 
@@ -262,7 +317,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a>
+      <a href="/tags/python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">python 机器学习</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a>
     </div>
   </div>
 
@@ -271,7 +326,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -282,6 +337,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/05/26/python/kmeans/">python 实现 k-means 算法</a>
+          </li>
         
           <li>
             <a href="/2018/04/24/javascript/webpack-loader/">写一个 webpack loader</a>

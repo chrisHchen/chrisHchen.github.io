@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>python 实现 k-means 算法 | Chris Chen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="算法基础机器学习中有两大类问题，一个是分类，一个是聚类。分类是根据已知类别标号(label)的样本，训练某个分类器，使它能够对未知类别的样本进行分类。属于 supervised learning (监督学习)。而聚类指事先并不知道任何样本的类别标号，而希望通过某种算法来把一组未知类别的样本划分成若干类别，这在机器学习中属于 unsupervised learning（非监督学习） 而本文要实现的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python 实现 k-means 算法">
+<meta property="og:url" content="http://example.com/2018/05/26/python/kmeans/index.html">
+<meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="算法基础机器学习中有两大类问题，一个是分类，一个是聚类。分类是根据已知类别标号(label)的样本，训练某个分类器，使它能够对未知类别的样本进行分类。属于 supervised learning (监督学习)。而聚类指事先并不知道任何样本的类别标号，而希望通过某种算法来把一组未知类别的样本划分成若干类别，这在机器学习中属于 unsupervised learning（非监督学习） 而本文要实现的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/static/kmeans/losfn.gif">
+<meta property="og:image" content="http://example.com/static/kmeans/Figure_2.png">
+<meta property="og:image" content="http://example.com/static/kmeans/Figure_3.png">
+<meta property="og:image" content="http://example.com/static/kmeans/Figure_4.png">
+<meta property="article:published_time" content="2018-05-26T22:33:17.000Z">
+<meta property="article:modified_time" content="2021-07-26T23:37:43.421Z">
+<meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="python 机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/static/kmeans/losfn.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="https://assets.imedao.com/images/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Chris Chen&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">welcome to my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-python/kmeans" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/26/python/kmeans/" class="article-date">
+  <time class="dt-published" datetime="2018-05-26T22:33:17.000Z" itemprop="datePublished">2018-05-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python-%E7%AE%97%E6%B3%95/">python 算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      python 实现 k-means 算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="算法基础"><a href="#算法基础" class="headerlink" title="算法基础"></a>算法基础</h2><p>机器学习中有两大类问题，一个是分类，一个是聚类。分类是根据已知类别标号(label)的样本，训练某个分类器，使它能够对未知类别的样本进行分类。属于 <code>supervised learning</code> (监督学习)。而聚类指事先并不知道任何样本的类别标号，而希望通过某种算法来把一组未知类别的样本划分成若干类别，这在机器学习中属于 <code>unsupervised learning</code>（非监督学习）</p>
+<p>而本文要实现的 k-means 算法就是一个比较简单的聚类算法。</p>
+<p>k-means 算法的基本思想是：通过迭代寻找 k 个聚类，使得用这 k 个聚类的均值来代表相应各类样本时所得的总体误差最小。k-means 算法的基础是最小误差平方和准则。</p>
+<p>k-means 算法的代价函数如下：<br><img src="/static/kmeans/losfn.gif"></p>
+<p>x(i) 表示第 i 个样本点，μc(i)表示第 i 个聚类的均值，c 表示某个类别的集合</p>
+<p>我们希望代价函数最小，如果各类内的样本越相似，其与该类均值间的误差平方越小，则各类的误差平方和也越小。</p>
+<p>k-means 算法基本步骤如下：</p>
+<span id="more"></span>
+
+<ol>
+<li>随机选取 k 个点作为初始质心。</li>
+<li>对于样本中每一个点，分别求与 k 点的距离。距离最小者就属于该类。</li>
+<li>此时对得到的 k 个类，重新计算新的质心。</li>
+<li>当 3 步得到的质心与之前的质心误差很小时，分类结束。</li>
+</ol>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>本例使用 sklearn 提供的 iris 数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X, y = iris.data, iris.target</span><br><span class="line">data = X[:,[<span class="number">0</span>,<span class="number">1</span>]] <span class="comment"># 取前两个维度作为样本 feature</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="计算欧式距离"><a href="#计算欧式距离" class="headerlink" title="计算欧式距离"></a>计算欧式距离</h2><p>欧式距离的计算函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">distance</span>(<span class="params">p1, p2</span>):</span></span><br><span class="line">  <span class="keyword">return</span> np.sqrt(np.<span class="built_in">sum</span>((p1-p2)**<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># test</span></span><br><span class="line">distance(np.array([<span class="number">0</span>,<span class="number">0</span>]), np.array([<span class="number">1</span>,<span class="number">2</span>])) <span class="comment"># 2.23606797749979</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="随机选取-Centroid"><a href="#随机选取-Centroid" class="headerlink" title="随机选取 Centroid"></a>随机选取 Centroid</h2><p>算法要求初始化时随机在数据集范围内选取 k 个 centroid:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">randam_centroid</span>(<span class="params">data, k</span>):</span></span><br><span class="line">  n = data.shape[<span class="number">1</span>]</span><br><span class="line">  centroids = np.zeros((k, n))</span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">    dmin, dmax = np.<span class="built_in">min</span>(data[:,i]), np.<span class="built_in">max</span>(data[:,i])</span><br><span class="line">    centroids[:, i] = dmin + (dmax - dmin) * np.random.rand(k)</span><br><span class="line">  <span class="keyword">return</span> centroids</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>np.random.rand(k)</code> 表示随机生成一个 k 维的 np.array 数组，数组每项都在 [0, 1) 之间</p>
+<h2 id="k-means-聚类算法"><a href="#k-means-聚类算法" class="headerlink" title="k-means 聚类算法"></a>k-means 聚类算法</h2><p>其中 <code>calc_kmeans</code> 是算法主体函数，主要有两个逻辑：<br>循环数据集，并计算样本和每个 centroid 的欧氏距离，最后将样本归类到距离最小的簇。<br>循环 centroids，计算属于该 centroid 簇的样本平均值，结果作为新的 centroids。</p>
+<p>converged 函数的逻辑是判断两组 centroids 是否完全一致，用来判断 k-means 算法是否收敛。当 centroids 不再变化时则算法结束。</p>
+<p>另外，k-means 有个缺点可能会陷入局部最优解（而不是全局最优解），所以这里通过多次计算取代价最小的解。这部分的逻辑在 mean_result 函数中实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KMeans</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, data</span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">      self.data = data</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">converged</span>(<span class="params">self, c1, c2</span>):</span></span><br><span class="line">    set1 = <span class="built_in">set</span>([<span class="built_in">tuple</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> c1])</span><br><span class="line">    set2 = <span class="built_in">set</span>([<span class="built_in">tuple</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> c2])</span><br><span class="line">    <span class="keyword">return</span> set1 == set2</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">calc_kmeans</span>(<span class="params">self, k=<span class="number">2</span></span>):</span></span><br><span class="line">      data = self.data</span><br><span class="line">      n = data</span><br><span class="line">      n = data.shape[<span class="number">0</span>] <span class="comment"># number of entries</span></span><br><span class="line">      centroids = randam_centroid(data, k)</span><br><span class="line">      label = np.zeros(n, dtype=<span class="built_in">int</span>) <span class="comment"># track the nearest centroid</span></span><br><span class="line">      assement = np.zeros(n) <span class="comment"># for the assement of our model</span></span><br><span class="line">      converged = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span> <span class="keyword">not</span> converged:</span><br><span class="line">          old_centroid = np.copy(centroids)</span><br><span class="line">          <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            min_dist = np.inf</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">              dist = distance(data[i], centroids[j])</span><br><span class="line">              <span class="keyword">if</span> dist &lt; min_dist:</span><br><span class="line">                min_dist = dist</span><br><span class="line">                label[i] = j</span><br><span class="line">            assement[i] = distance(data[i], centroids[label[i]])**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">          <span class="comment"># update centroid</span></span><br><span class="line">          <span class="keyword">for</span> m <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">            centroids[m] = np.mean(data[label==m], axis=<span class="number">0</span>)</span><br><span class="line">          converged = self.converged(centroids, old_centroid)</span><br><span class="line">      <span class="keyword">return</span> centroids, label, np.<span class="built_in">sum</span>(assement)</span><br><span class="line"></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  由于算法可能局部收敛的问题，随机多运行几次，取最优值</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">mean_result</span>(<span class="params">self, k, m = <span class="number">10</span></span>):</span></span><br><span class="line">    best_assement = np.inf</span><br><span class="line">    best_centroids = <span class="literal">None</span></span><br><span class="line">    best_label = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">        centroids, label, assement = self.calc_kmeans(k)</span><br><span class="line">        <span class="keyword">if</span> assement &lt; best_assement:</span><br><span class="line">          best_centroids = centroids</span><br><span class="line">          best_label = label</span><br><span class="line">          best_assement = assement</span><br><span class="line">    <span class="keyword">return</span> best_centroids, best_label</span><br></pre></td></tr></table></figure>
+
+<p>使用以上算法在 iris 数据子集上计算的结果如下，分别为 k=2，3，4 的结果, 图中的圆点为 centroid：<br><img src="/static/kmeans/Figure_2.png" alt="k=2" width="640" height="480" align="bottom" /><br><img src="/static/kmeans/Figure_3.png" alt="k=3" width="640" height="480" align="bottom" /><br><img src="/static/kmeans/Figure_4.png" alt="k=4" width="640" height="480" align="bottom" /></p>
+<p>最后提供下完整代码<br><a href='/static/kmeans/kmeans.py' target="_blank">kmeans.py</a></p>
+<p>K-Means 的主要优点有：<br>1）原理比较简单，实现也是很容易，收敛速度快。<br>2）聚类效果较优。<br>3）算法的可解释度比较强。<br>4）主要需要调参的参数仅仅是簇数 k。</p>
+<p>K-Means 的主要缺点有：<br>1）K 值的选取不好把握<br>2）对于不是凸的数据集比较难收敛<br>3）如果各隐含类别的数据不平衡，比如各隐含类别的数据量严重失衡，或者各隐含类别的方差不同，则聚类效果不佳。<br>4） 采用迭代方法，得到的结果只是局部最优。<br>5） 对噪音和异常点比较的敏感。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="ckrl9t2l400059cnggnv78way" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python 机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/24/javascript/webpack-loader/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">写一个 webpack loader</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python-%E7%AE%97%E6%B3%95/">python 算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">python 机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/python-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">python 机器学习</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/26/python/kmeans/">python 实现 k-means 算法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/24/javascript/webpack-loader/">写一个 webpack loader</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/16/javascript/redux/">redux 源码分析【4.0.0-beta.2】</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/25/javascript/fastdom/">fastdom 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Chris Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
