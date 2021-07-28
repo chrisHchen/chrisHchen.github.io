@@ -1,8 +1,8 @@
 ---
 title: python 实现 k-means 算法
 date: 2018-05-26 22:33:17
-tags: python 机器学习
-categories: python 算法
+tags: [python, 机器学习]
+categories: [python, 算法]
 ---
 
 ## 算法基础
