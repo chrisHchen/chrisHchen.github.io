@@ -75,6 +75,116 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript/tree-shaking" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/08/25/javascript/tree-shaking/" class="article-date">
+  <time class="dt-published" datetime="2018-08-25T10:16:01.000Z" itemprop="datePublished">2018-08-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/25/javascript/tree-shaking/">简析 Tree-Shaking</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="tree-shaking-解决的问题"><a href="#tree-shaking-解决的问题" class="headerlink" title="tree-shaking 解决的问题"></a>tree-shaking 解决的问题</h2><p>web 端 js 代码正在朝着越来越复杂的方向发展，代码体积也越来越大，于是出现了代码模块化的概念。<br>但随之也产生了一些问题，比如最终打包的文件会包含一些实际上用不到的代码。Tree Shaking 是一种通过消除最终文件中未使用的代码来优化体积的方法。</p>
+<p>官方有标准的说法：Tree-shaking 的本质是消除无用的 js 代码。无用代码消除广泛存在于传统的编程语言编译器中，编译器可以判断出某些代码根本不影响输出，然后消除这些代码，这个称之为 DCE（dead code elimination）</p>
+<p>先举个 🌰，比如有个 <code>util.js</code> 库如下：</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/08/25/javascript/tree-shaking/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/08/25/javascript/tree-shaking/" data-id="ckrplkb2x000a8tn50n7c5ucw" data-title="简析 Tree-Shaking" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-javascript/nth-type-of" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/25/javascript/nth-type-of/" class="article-date">
+  <time class="dt-published" datetime="2018-06-25T10:16:01.000Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/css/">css</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/25/javascript/nth-type-of/">nth-type-of 和 nth-child 的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="CSS-伪类选择器"><a href="#CSS-伪类选择器" class="headerlink" title="CSS 伪类选择器"></a>CSS 伪类选择器</h2><p>本文将用代码例子的形式展示以下几个比较容易混淆的 css 伪类选择器的使用:</p>
+<ul>
+<li>p:first-of-type 选择属于其父元素的首个元素</li>
+<li>p:last-of-type 选择属于其父元素的最后元素</li>
+<li>p:only-of-type 选择属于其父元素唯一的元素</li>
+<li>p:only-child 选择属于其父元素的唯一子元素</li>
+<li>p:nth-type-of(n) 选择属于其父元素的第 n 个 p 元素</li>
+<li>p:nth-child(n) 选择属于其父元素的第 n 个子元素</li>
+</ul>
+<p>点击<a target="_blank" rel="noopener" href="https://jsbin.com/govuputire/edit?html,output">这里</a>查看本文提到的例子.</p>
+<p>使用到的 html 片段如下：</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/25/javascript/nth-type-of/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/06/25/javascript/nth-type-of/" data-id="ckrplkb2s00048tn5g593grdu" data-title="nth-type-of 和 nth-child 的区别" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript/styled-component" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/06/10/javascript/styled-component/" class="article-date">
@@ -118,7 +228,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/06/10/javascript/styled-component/" data-id="ckrnoh81f0005g8nk81xi4hqq" data-title="styled-component 工作原理" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/06/10/javascript/styled-component/" data-id="ckrplkb2u00068tn59edm4zmf" data-title="styled-component 工作原理" class="article-share-link">Share</a>
       
       
       
@@ -173,7 +283,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="ckrnoh81o000ng8nk2rc64ehw" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="ckrplkb30000h8tn59wbj3cfv" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
       
       
       
@@ -193,6 +303,10 @@
   <time class="dt-published" datetime="2018-05-20T23:13:01.000Z" itemprop="datePublished">2018-05-20</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -219,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="ckrnoh8170001g8nkgfldd2xn" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="ckrplkb2o00018tn51ssr3t3e" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -273,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckrnoh81g0006g8nkg5xy7lj1" data-title="写一个 webpack loader" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckrplkb2y000c8tn50o2pc6sq" data-title="写一个 webpack loader" class="article-share-link">Share</a>
       
       
       
@@ -324,7 +438,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrnoh81d0004g8nkfo9wd878" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrplkb2t00058tn570qlalt4" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
       
       
       
@@ -376,7 +490,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrnoh8120000g8nk8qixfmsl" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrplkb2k00008tn5db600yw4" data-title="fastdom 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -400,7 +514,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/python/%E7%AE%97%E6%B3%95/">算法</a></li></ul></li></ul>
     </div>
   </div>
 
@@ -410,7 +524,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
     </div>
   </div>
 
@@ -420,7 +534,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a>
+      <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a>
     </div>
   </div>
 
@@ -429,7 +543,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -442,6 +556,14 @@
       <ul>
         
           <li>
+            <a href="/2018/08/25/javascript/tree-shaking/">简析 Tree-Shaking</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/25/javascript/nth-type-of/">nth-type-of 和 nth-child 的区别</a>
+          </li>
+        
+          <li>
             <a href="/2018/06/10/javascript/styled-component/">styled-component 工作原理</a>
           </li>
         
@@ -451,14 +573,6 @@
         
           <li>
             <a href="/2018/05/20/javascript/momoize-one/">momoize-one 源码解析</a>
-          </li>
-        
-          <li>
-            <a href="/2018/04/24/javascript/webpack-loader/">写一个 webpack loader</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/16/javascript/redux/">redux 源码分析【4.0.0-beta.2】</a>
           </li>
         
       </ul>
