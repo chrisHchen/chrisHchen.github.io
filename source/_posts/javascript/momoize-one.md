@@ -2,6 +2,7 @@
 title: momoize-one 源码解析
 date: 2018-05-20 23:13:01
 tags: 源码解析
+categories: javascript
 ---
 
 [momoize-one](https://github.com/alexreardon/memoize-one) 是一个 javascript 记忆库。它能根据函数的参数来缓存函数运算的结果。momoize-one 和其他 js 记忆库相比的不同之处在于它只会缓存函数**最近一次**入参对应的执行结果，所以内存溢出的风险较小。
