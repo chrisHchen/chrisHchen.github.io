@@ -75,6 +75,110 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript/momoize-one" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/20/javascript/momoize-one/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T23:13:01.000Z" itemprop="datePublished">2018-05-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/20/javascript/momoize-one/">momoize-one 源码解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://github.com/alexreardon/memoize-one">momoize-one</a> 是一个 javascript 记忆库。它能根据函数的参数来缓存函数运算的结果。momoize-one 和其他 js 记忆库相比的不同之处在于它只会缓存函数<strong>最近一次</strong>入参对应的执行结果，所以内存溢出的风险较小。</p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>memoize-one 的 api 非常简便，模块只 export 唯一一个 api： <code>memoizeOne</code>。先看下 memoize-one 如何使用：</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/05/20/javascript/momoize-one/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="ckrwp0qgy00058lnf4lr7akar" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-javascript/webpack-loader" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/04/24/javascript/webpack-loader/" class="article-date">
+  <time class="dt-published" datetime="2018-04-24T23:05:50.000Z" itemprop="datePublished">2018-04-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/04/24/javascript/webpack-loader/">写一个 webpack loader</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>前几天看了 webpack 的官网介绍 <a target="_blank" rel="noopener" href="https://webpack.js.org/contribute/writing-a-loader/">write a loader</a> 的文档，觉得挺有意思，于是打算自己实践一下。</p>
+<p><strong>什么是 loader</strong></p>
+<p>官网的介绍很直接明了：<br><code><br><a target="_blank" rel="noopener" href="https://webpack.js.org/contribute/writing-a-loader/">A loader is a node module that exports a function. This function is called when a resource should be transformed by this loader. The given function will have access to the Loader API using the this context provided to it</a><br></code></p>
+<p>首先 loader 是一个 nodejs 的模块，然后这个模块需要 exports 一个 function。这个 function 可以通过 this 上下文获得 <a target="_blank" rel="noopener" href="https://webpack.js.org/api/loaders/">Loader API</a> 上的数据。</p>
+<p><strong>sync/async loader</strong></p>
+<p>sync loader 可以直接返回转义后的 js 字符串。async loader 需要调用 this.async() 来指明需要等待一个异步的结果，this.async() 返回 this.callback 函数，之后 async loader 必须 return undefined 并通过 callback 来返回转义后的 js。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/04/24/javascript/webpack-loader/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckrwp0qhb000q8lnfdnlzd1vb" data-title="写一个 webpack loader" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript/redux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/03/16/javascript/redux/" class="article-date">
@@ -112,7 +216,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrvbk5yv000aa7lz6m55fjbx" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrwp0qh3000a8lnf8wu14d15" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
       
       
       
@@ -164,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrvbk5yp0004a7lz8we86cpk" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrwp0qgx00048lnfdgvj8aks" data-title="fastdom 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -203,7 +307,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
     </div>
   </div>
 
@@ -213,7 +317,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 15px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -222,7 +326,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -247,11 +351,11 @@
           </li>
         
           <li>
-            <a href="/2018/09/26/python/median-o-two-sorted-arrays/">力扣-Median of Two Sorted Arrays</a>
+            <a href="/2019/01/05/javascript/service-worker-example/">Service-worker 使用案例</a>
           </li>
         
           <li>
-            <a href="/2018/08/25/javascript/tree-shaking/">简析 Tree-Shaking</a>
+            <a href="/2019/01/04/javascript/web-worker-vs-service-worker/">Web Worker vs Service Worker</a>
           </li>
         
       </ul>
