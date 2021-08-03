@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>最长回文子串 | Chris Chen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="什么是回文串最长回文子串是面试中经常问到的算法题。首先得明确什么是回文串？回文串就是正着读和反正读都一样的字符串。 比如 aba 和 acca 回文串的特点回文串的特点：如果一个字符串 s 是回文串，则 s 去掉头尾的字符后的字符串依然是回文串。比如 acbca 是回文串，则去掉头尾的 a 后的字符串 cbc 也肯定是回文串，再迭代一下,去掉头尾的 c 后形成的字符串 b 也是回文串(单字母的字符">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最长回文子串">
+<meta property="og:url" content="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/index.html">
+<meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="什么是回文串最长回文子串是面试中经常问到的算法题。首先得明确什么是回文串？回文串就是正着读和反正读都一样的字符串。 比如 aba 和 acca 回文串的特点回文串的特点：如果一个字符串 s 是回文串，则 s 去掉头尾的字符后的字符串依然是回文串。比如 acbca 是回文串，则去掉头尾的 a 后的字符串 cbc 也肯定是回文串，再迭代一下,去掉头尾的 c 后形成的字符串 b 也是回文串(单字母的字符">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-01T12:06:22.000Z">
+<meta property="article:modified_time" content="2021-08-03T00:24:25.100Z">
+<meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="力扣">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="https://assets.imedao.com/images/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Chris Chen&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">welcome to my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-algorithm/longestPalindromicSubstring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/01/algorithm/longestPalindromicSubstring/" class="article-date">
+  <time class="dt-published" datetime="2020-02-01T12:06:22.000Z" itemprop="datePublished">2020-02-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      最长回文子串
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是回文串"><a href="#什么是回文串" class="headerlink" title="什么是回文串"></a>什么是回文串</h2><p>最长回文子串是面试中经常问到的算法题。首先得明确什么是回文串？回文串就是正着读和反正读都一样的字符串。</p>
+<p>比如 <code>aba</code> 和 <code>acca</code></p>
+<h2 id="回文串的特点"><a href="#回文串的特点" class="headerlink" title="回文串的特点"></a>回文串的特点</h2><p>回文串的特点：如果一个字符串 s 是回文串，则 s 去掉头尾的字符后的字符串依然是回文串。比如 <code>acbca</code> 是回文串，则去掉头尾的 a 后的字符串 <code>cbc</code> 也肯定是回文串，再迭代一下,去掉头尾的 c 后形成的字符串 <code>b</code> 也是回文串(单字母的字符串永远是回文串)。</p>
+<p>所以寻找回文串的问题核心思想是：从中间开始向两边扩散来判断回文串。</p>
+<p>这里要注意的一点是，回文串的长度可能是奇数也可能是偶数，比如 <code>acbca</code> 和 <code>acca</code> 都是回文串。</p>
+<span id="more"></span>
+
+<h2 id="非动态规划算法"><a href="#非动态规划算法" class="headerlink" title="非动态规划算法"></a>非动态规划算法</h2><p>按照上面的思路，从中心向两边扩散的思路，可以写出非动态规划的算法，python 实现的版本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 非动态规划算法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestPalindrome</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">      res = <span class="string">&#x27;&#x27;</span></span><br><span class="line">      <span class="comment"># 枚举中心位置的索引</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">        <span class="comment"># 长度为奇数时</span></span><br><span class="line">        s1 = self.palindrome(s,i ,i)</span><br><span class="line">        <span class="comment"># 长度为偶数时</span></span><br><span class="line">        s2 = self.palindrome(s,i ,i + <span class="number">1</span>)</span><br><span class="line">        res = s1 <span class="keyword">if</span> <span class="built_in">len</span>(s1) &gt; <span class="built_in">len</span>(res) <span class="keyword">else</span> res</span><br><span class="line">        res = s2 <span class="keyword">if</span> <span class="built_in">len</span>(s2) &gt; <span class="built_in">len</span>(res) <span class="keyword">else</span> res</span><br><span class="line">      <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">palindrome</span>(<span class="params">self, <span class="built_in">str</span>, l, r</span>):</span></span><br><span class="line">      length = <span class="built_in">len</span>(<span class="built_in">str</span>)</span><br><span class="line">      <span class="comment"># 索引界限判断</span></span><br><span class="line">      <span class="keyword">while</span> l &gt;=<span class="number">0</span> <span class="keyword">and</span> r &lt; length <span class="keyword">and</span> <span class="built_in">str</span>[l] == <span class="built_in">str</span>[r]:</span><br><span class="line">        <span class="comment"># 向两边扩展</span></span><br><span class="line">        l = l - <span class="number">1</span></span><br><span class="line">        r = r + <span class="number">1</span></span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">str</span>[l+<span class="number">1</span>: r]</span><br></pre></td></tr></table></figure>
+
+<p>算法的时间复杂度 O(N^2)，空间复杂度 O(1)。</p>
+<h2 id="动态规划算法"><a href="#动态规划算法" class="headerlink" title="动态规划算法"></a>动态规划算法</h2><p>上一篇文章<a target="_blank" rel="noopener" href="https://chrishchen.github.io/2020/01/20/algorithm/dynamic_programming/">动态规划总结</a>提到过，动态规划算法最主要的就是找出状态，并得到状态转移方程。</p>
+<p>这里的状态有 2 个，左边界 i 和右边界 j。动态规划的状态转移方程：</p>
+<p><strong>P(i,j)=P(i+1,j−1)∧(S[i]==S[j])</strong></p>
+<p>上面这个方程的意思是：从状态 P(i+1,j−1)是回文串要推导出(转移到) P(i,j) 也是回文串的条件就是 S[i]==S[j]。也就是说 P(i,j) 的值(True/False)是 P(i+1,j−1) and (S[i]==S[j]) 的逻辑交。这个条件其实和上面非动态规划算法是一致的。只是动态规划里需要用到 dp table。</p>
+<p>在状态转移方程中，我们是从长度较短的字符串向长度较长的字符串进行转移的，因此一定要注意动态规划的循环顺序：自底向上</p>
+<p>具体的算法如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 动态规划算法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SolutionDP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestPalindrome</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">      length = <span class="built_in">len</span>(s)</span><br><span class="line">      <span class="comment"># 长度为 1 的都是回文串</span></span><br><span class="line">      <span class="keyword">if</span> length &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> s</span><br><span class="line">      <span class="comment"># dp[i][j] 表示 s[i..j] 是否是回文串</span></span><br><span class="line">      dp = [[<span class="literal">False</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(length)] <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(length)]</span><br><span class="line">      maxLen = <span class="number">0</span></span><br><span class="line">      start = <span class="number">0</span></span><br><span class="line">      <span class="comment"># 长度为 1 都都是回文串，初始化为 True</span></span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(length):</span><br><span class="line">        dp[i][i] = <span class="literal">True</span></span><br><span class="line">      <span class="comment"># 枚举子串长度</span></span><br><span class="line">      <span class="keyword">for</span> slen <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, length):</span><br><span class="line">        <span class="comment"># 枚举左边界</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(length):</span><br><span class="line">          <span class="comment"># 右边界</span></span><br><span class="line">          j = i + slen - <span class="number">1</span></span><br><span class="line">          <span class="keyword">if</span> j &gt; slen:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">          <span class="keyword">if</span> s[i] != s[j]:</span><br><span class="line">            <span class="comment"># 状态转移为 False</span></span><br><span class="line">            dp[i][j] = <span class="literal">False</span></span><br><span class="line">          <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> j - i &lt; <span class="number">3</span>:</span><br><span class="line">              <span class="comment"># 状态转移为 True</span></span><br><span class="line">              dp[i][j] = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">              <span class="comment"># 状态转移为 True/False</span></span><br><span class="line">              dp[i][j] = dp[i + <span class="number">1</span>][j - <span class="number">1</span>]</span><br><span class="line">          <span class="keyword">if</span> dp[i][j] == <span class="literal">True</span> <span class="keyword">and</span> (j - i + <span class="number">1</span>) &gt; maxLen:</span><br><span class="line">            maxLen = j - i + <span class="number">1</span></span><br><span class="line">            start = i</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> s[start: start + maxLen]</span><br></pre></td></tr></table></figure>
+
+<p>python3 版本的算法源文件下载 <a href='/static/longestPalindromicSubstring/lp.py' target="_blank">lp.py</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/" data-id="ckrvbk5ym0001a7lz3aoafojm" data-title="最长回文子串" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/01/20/algorithm/dynamic_programming/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">动态规划总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/01/algorithm/longestPalindromicSubstring/">最长回文子串</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/20/algorithm/dynamic_programming/">动态规划总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/05/javascript/react-hook-indepth/">React Hook 工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/26/python/median-o-two-sorted-arrays/">力扣-Median of Two Sorted Arrays</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/25/javascript/tree-shaking/">简析 Tree-Shaking</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Chris Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
