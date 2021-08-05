@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>webpack loader vs plugin | Chris Chen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言webpack 配置文件中最常见同时也是配置最繁琐的就是 loader 和 plugin。本文是我个人对 loader 和 plugin 理解的总结。可能有不准确的地方，后续会再次修改。 什么是 Loader ?Loader 翻译过来可以叫加载器。官方文档对 loader 的解释原文如下:  Out of the box, webpack only understands JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack loader vs plugin">
+<meta property="og:url" content="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/index.html">
+<meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="前言webpack 配置文件中最常见同时也是配置最繁琐的就是 loader 和 plugin。本文是我个人对 loader 和 plugin 理解的总结。可能有不准确的地方，后续会再次修改。 什么是 Loader ?Loader 翻译过来可以叫加载器。官方文档对 loader 的解释原文如下:  Out of the box, webpack only understands JavaScript">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-11T20:05:50.000Z">
+<meta property="article:modified_time" content="2021-08-05T13:27:29.189Z">
+<meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="webpack">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="https://assets.imedao.com/images/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Chris Chen&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">welcome to my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-javascript/webpack-loader-vs-plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/" class="article-date">
+  <time class="dt-published" datetime="2020-05-11T20:05:50.000Z" itemprop="datePublished">2020-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      webpack loader vs plugin
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>webpack 配置文件中最常见同时也是配置最繁琐的就是 loader 和 plugin。本文是我个人对 loader 和 plugin 理解的总结。可能有不准确的地方，后续会再次修改。</p>
+<h2 id="什么是-Loader"><a href="#什么是-Loader" class="headerlink" title="什么是 Loader ?"></a>什么是 Loader ?</h2><p>Loader 翻译过来可以叫<strong>加载器</strong>。官方文档对 loader 的<a target="_blank" rel="noopener" href="https://webpack.js.org/concepts/#loaders">解释原文</a>如下:</p>
+<blockquote style='font-size:12px;text-align:left'>
+Out of the box, webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+
+<p>Loaders are transformations that are applied to the source code of a module. They allow you to pre-process files as you import or “load” them. Thus, loaders are kind of like “tasks” in other build tools and provide a powerful way to handle front-end build steps. Loaders can transform files from a different language (like TypeScript) to JavaScript or load inline images as data URLs. Loaders even allow you to do things like import CSS files directly from your JavaScript modules!</p>
+</blockquote>
+
+<p><strong>loader 是一个转换器，将 A 文件进行编译成 B 文件，属于单纯的文件转换过程</strong>；</p>
+<p>我总结为如下几点：</p>
+<ol>
+<li>loader 需要处理的是除了 js 和 json 之外的文件类型。</li>
+<li>loader 将这类文件转换(transform)为应用可以消费的合法模块。</li>
+</ol>
+<p>第一点很好理解。第二点就有点抽象了，什么是“应用可以消费的合法模块”呢？</p>
+<span id="more"></span>
+<p>这里首先要了解 webpack 中<strong>模块</strong>的概念。本质上，任意的文件在 webpack 中都可以认为是一个模块。但有些模块是 webpack 原生就支持的，比如 js 文件，有些则需要通过特定的 loader 处理后才能被 webpack 打包。其中 webpack 原生支持的模块如下：</p>
+<ul>
+<li>ECMAScript modules(用 import 加载的模块)</li>
+<li>CommonJS modules(用 require 加载的模块)</li>
+<li>AMD modules（用 define 加载的模块，现在基本很少使用了）</li>
+<li>Assets</li>
+<li>WebAssembly modules</li>
+</ul>
+<p>其中 <code>Assets</code> 类型的包括 fonts, icons, txt，etc。在 webpack 5 之前是需要额外使用</p>
+<ul>
+<li><code>raw-loader(以 string 形式加载文件内容)</code>,</li>
+<li><code>url-loader(以内联 data URI 的形式加载文件)</code>,</li>
+<li><code>file-loader(将文件放到 output 目录，并以 path 加载文件) 来处理的</code>。</li>
+</ul>
+<p>webpack 5 已经原生支持 <code>Asset Modules </code>，所以不需要再使用以上的 loader 了。</p>
+<p>总结而言对于原生支持的文件类型，webpack 可以自己分析依赖并打包，对于不支持的文件类型，需要使用特定的 loader 来告诉 webpack 文件的依赖关系和如何打包。</p>
+<p>所以从 loader 的配置也可以看出，必须指定 <code>test</code> 和 <code>use</code>：<br><code>test</code>指定文件类型，<code>use</code>指定使用什么 loader 来处理。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&quot;my-first-webpack.bundle.js&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [&#123; <span class="attr">test</span>: <span class="regexp">/\.txt$/</span>, use: <span class="string">&quot;raw-loader&quot;</span> &#125;],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这里要注意 loader 是配置在 <code>module.rules</code> 下面，而不是 <code>rules</code></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>看一个简单的例子 <a target="_blank" rel="noopener" href="https://github.com/webpack-contrib/raw-loader/blob/master/src/index.js">raw-loader</a>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; getOptions &#125; <span class="keyword">from</span> <span class="string">&quot;loader-utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; validate &#125; <span class="keyword">from</span> <span class="string">&quot;schema-utils&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> schema <span class="keyword">from</span> <span class="string">&quot;./options.json&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">rawLoader</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> options = getOptions(<span class="built_in">this</span>);</span><br><span class="line"></span><br><span class="line">  validate(schema, options, &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;Raw Loader&quot;</span>,</span><br><span class="line">    <span class="attr">baseDataPath</span>: <span class="string">&quot;options&quot;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> json = <span class="built_in">JSON</span>.stringify(source)</span><br><span class="line">    .replace(<span class="regexp">/\u2028/g</span>, <span class="string">&quot;\\u2028&quot;</span>)</span><br><span class="line">    .replace(<span class="regexp">/\u2029/g</span>, <span class="string">&quot;\\u2029&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> esModule =</span><br><span class="line">    <span class="keyword">typeof</span> options.esModule !== <span class="string">&quot;undefined&quot;</span> ? options.esModule : <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;esModule ? <span class="string">&quot;export default&quot;</span> : <span class="string">&quot;module.exports =&quot;</span>&#125;</span> <span class="subst">$&#123;json&#125;</span>;`</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数签名是 <code>(source: string) => string</code><br>可见 loader 首先是一个 function， function 内部会对源码 source 进行处理，这里的 raw-loader 主要是对元数据使用 json.stringify 做序列化。最后输出 js 源码字符串。</p>
+<h2 id="什么是-plugins"><a href="#什么是-plugins" class="headerlink" title="什么是 plugins?"></a>什么是 plugins?</h2><blockquote style='font-size:12px;text-align:left'>
+While loaders are used to transform certain types of modules, plugins can be leveraged to perform a wider range of tasks like bundle optimization, asset management and injection of environment variables.
+
+<p>Plugins are the backbone of webpack. webpack itself is built on the same plugin system that you use in your webpack configuration!<br>They also serve the purpose of doing anything else that a loader cannot do.</p>
+</blockquote>
+
+<p><strong>plugin 是一个扩展器，它丰富了 webpack 本身，webpack 本身就是建立在插件系统上的，plugin 针对是 loader 结束后，webpack 打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听 webpack 打包过程中的某些节点，执行广泛的任务。</strong></p>
+<p>plugin 需要 require 进来。另外，plugin 可能会被使用多次，所以需要用 <code>new</code> 关键字实例化</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&quot;html-webpack-plugin&quot;</span>); <span class="comment">//installed via npm</span></span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">&quot;webpack&quot;</span>); <span class="comment">//to access built-in plugins</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [&#123; <span class="attr">test</span>: <span class="regexp">/\.txt$/</span>, use: <span class="string">&quot;raw-loader&quot;</span> &#125;],</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> HtmlWebpackPlugin(&#123; <span class="attr">template</span>: <span class="string">&quot;./src/index.html&quot;</span> &#125;)],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>plugin 是一个包含 <code>apply</code> 方法的 js 对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pluginName = <span class="string">&quot;ConsoleLogOnBuildWebpackPlugin&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConsoleLogOnBuildWebpackPlugin</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">apply</span>(<span class="params">compiler</span>)</span> &#123;</span><br><span class="line">    compiler.hooks.run.tap(pluginName, <span class="function"><span class="params">compilation</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&quot;The webpack build process is starting!!!&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = ConsoleLogOnBuildWebpackPlugin;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Tapable"><a href="#Tapable" class="headerlink" title="Tapable"></a>Tapable</h2><p>webpack 中有很多对象都继承自 <a target="_blank" rel="noopener" href="https://github.com/webpack/tapable#tapable">Tapable</a> 类，该类暴露了 <code>tap</code>,<code>tapAsync</code>,<code>tapPromise</code> 三个函数供 plugins 来注入特定的构建流程。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://webpack.js.org/concepts/#loaders">webpack doc about loaders</a><br><a target="_blank" rel="noopener" href="https://webpack.js.org/api/plugins/">Plugin API</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/" data-id="ckryyf1qs000qaqn6gvji97f0" data-title="webpack loader vs plugin" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/01/algorithm/longestPalindromicSubstring/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">最长回文子串</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 15px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/01/algorithm/longestPalindromicSubstring/">最长回文子串</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/20/algorithm/dynamic_programming/">动态规划总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/05/javascript/react-hook-indepth/">React Hook 工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/05/javascript/service-worker-example/">Service-worker 使用案例</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Chris Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

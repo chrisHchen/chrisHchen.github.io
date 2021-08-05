@@ -75,6 +75,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-python/kmeans" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/26/python/kmeans/" class="article-date">
+  <time class="dt-published" datetime="2018-05-26T22:33:17.000Z" itemprop="datePublished">2018-05-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/26/python/kmeans/">python 实现 k-means 算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="算法基础"><a href="#算法基础" class="headerlink" title="算法基础"></a>算法基础</h2><p>机器学习中有两大类问题，一个是分类，一个是聚类。分类是根据已知类别标号(label)的样本，训练某个分类器，使它能够对未知类别的样本进行分类。属于 <code>supervised learning</code> (监督学习)。而聚类指事先并不知道任何样本的类别标号，而希望通过某种算法来把一组未知类别的样本划分成若干类别，这在机器学习中属于 <code>unsupervised learning</code>（非监督学习）</p>
+<p>而本文要实现的 k-means 算法就是一个比较简单的聚类算法。</p>
+<p>k-means 算法的基本思想是：通过迭代寻找 k 个聚类，使得用这 k 个聚类的均值来代表相应各类样本时所得的总体误差最小。k-means 算法的基础是最小误差平方和准则。</p>
+<p>k-means 算法的代价函数如下：<br><img src="/static/kmeans/losfn.gif"></p>
+<p>x(i) 表示第 i 个样本点，μc(i)表示第 i 个聚类的均值，c 表示某个类别的集合</p>
+<p>我们希望代价函数最小，如果各类内的样本越相似，其与该类均值间的误差平方越小，则各类的误差平方和也越小。</p>
+<p>k-means 算法基本步骤如下：</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/05/26/python/kmeans/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="ckryyf1qv000waqn6883q4oy9" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript/momoize-one" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/05/20/javascript/momoize-one/" class="article-date">
@@ -111,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="ckrwp0qgy00058lnf4lr7akar" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="ckryyf1q90005aqn6bnb5ea1w" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -165,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckrwp0qhb000q8lnfdnlzd1vb" data-title="写一个 webpack loader" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="ckryyf1qt000saqn6a2c4fnq5" data-title="写一个 webpack loader" class="article-share-link">Share</a>
       
       
       
@@ -216,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckrwp0qh3000a8lnf8wu14d15" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="ckryyf1qd000aaqn6c1lkh216" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
       
       
       
@@ -268,7 +323,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckrwp0qgx00048lnfdgvj8aks" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="ckryyf1q70004aqn698dp91jh" data-title="fastdom 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -317,7 +372,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 15px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 15px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -326,7 +381,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -337,6 +392,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
+          </li>
         
           <li>
             <a href="/2020/02/01/algorithm/longestPalindromicSubstring/">最长回文子串</a>
@@ -352,10 +411,6 @@
         
           <li>
             <a href="/2019/01/05/javascript/service-worker-example/">Service-worker 使用案例</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/04/javascript/web-worker-vs-service-worker/">Web Worker vs Service Worker</a>
           </li>
         
       </ul>

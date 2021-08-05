@@ -75,6 +75,69 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript/webpack-loader-vs-plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/" class="article-date">
+  <time class="dt-published" datetime="2020-05-11T20:05:50.000Z" itemprop="datePublished">2020-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>webpack 配置文件中最常见同时也是配置最繁琐的就是 loader 和 plugin。本文是我个人对 loader 和 plugin 理解的总结。可能有不准确的地方，后续会再次修改。</p>
+<h2 id="什么是-Loader"><a href="#什么是-Loader" class="headerlink" title="什么是 Loader ?"></a>什么是 Loader ?</h2><p>Loader 翻译过来可以叫<strong>加载器</strong>。官方文档对 loader 的<a target="_blank" rel="noopener" href="https://webpack.js.org/concepts/#loaders">解释原文</a>如下:</p>
+<blockquote style='font-size:12px;text-align:left'>
+Out of the box, webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+
+<p>Loaders are transformations that are applied to the source code of a module. They allow you to pre-process files as you import or “load” them. Thus, loaders are kind of like “tasks” in other build tools and provide a powerful way to handle front-end build steps. Loaders can transform files from a different language (like TypeScript) to JavaScript or load inline images as data URLs. Loaders even allow you to do things like import CSS files directly from your JavaScript modules!</p>
+</blockquote>
+
+<p><strong>loader 是一个转换器，将 A 文件进行编译成 B 文件，属于单纯的文件转换过程</strong>；</p>
+<p>我总结为如下几点：</p>
+<ol>
+<li>loader 需要处理的是除了 js 和 json 之外的文件类型。</li>
+<li>loader 将这类文件转换(transform)为应用可以消费的合法模块。</li>
+</ol>
+<p>第一点很好理解。第二点就有点抽象了，什么是“应用可以消费的合法模块”呢？</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/" data-id="ckryyf1qs000qaqn6gvji97f0" data-title="webpack loader vs plugin" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-algorithm/longestPalindromicSubstring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/02/01/algorithm/longestPalindromicSubstring/" class="article-date">
@@ -114,7 +177,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/" data-id="ckrwp0qgt00018lnfc9kp7j18" data-title="最长回文子串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/" data-id="ckryyf1q30001aqn60x546v9f" data-title="最长回文子串" class="article-share-link">Share</a>
       
       
       
@@ -165,7 +228,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/01/20/algorithm/dynamic_programming/" data-id="ckrwp0qgp00008lnf6g425p51" data-title="动态规划总结" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/01/20/algorithm/dynamic_programming/" data-id="ckryyf1pz0000aqn6f7w64b6j" data-title="动态规划总结" class="article-share-link">Share</a>
       
       
       
@@ -218,7 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/11/05/javascript/react-hook-indepth/" data-id="ckrwp0qh200098lnfa8psfibq" data-title="React Hook 工作原理" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2019/11/05/javascript/react-hook-indepth/" data-id="ckryyf1qc0009aqn6g0zuhbo8" data-title="React Hook 工作原理" class="article-share-link">Share</a>
       
       
       
@@ -270,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/01/05/javascript/service-worker-example/" data-id="ckrwp0qh5000e8lnf5j8dgx7t" data-title="Service-worker 使用案例" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2019/01/05/javascript/service-worker-example/" data-id="ckryyf1qe000eaqn676edgbrz" data-title="Service-worker 使用案例" class="article-share-link">Share</a>
       
       
       
@@ -322,7 +385,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/01/04/javascript/web-worker-vs-service-worker/" data-id="ckrwp0qha000m8lnf2fv71qgn" data-title="Web Worker vs Service Worker" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2019/01/04/javascript/web-worker-vs-service-worker/" data-id="ckryyf1qj000maqn6fzylfbrd" data-title="Web Worker vs Service Worker" class="article-share-link">Share</a>
       
       
       
@@ -374,7 +437,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/09/26/python/median-o-two-sorted-arrays/" data-id="ckrwp0qhe000w8lnf18069xx7" data-title="力扣-Median of Two Sorted Arrays" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/09/26/python/median-o-two-sorted-arrays/" data-id="ckryyf1r60023aqn692mvdega" data-title="力扣-Median of Two Sorted Arrays" class="article-share-link">Share</a>
       
       
       
@@ -425,7 +488,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/08/25/javascript/tree-shaking/" data-id="ckrwp0qh8000l8lnf7w2rgsx4" data-title="简析 Tree-Shaking" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/08/25/javascript/tree-shaking/" data-id="ckryyf1qi000laqn62ntxehc4" data-title="简析 Tree-Shaking" class="article-share-link">Share</a>
       
       
       
@@ -484,7 +547,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/06/25/javascript/nth-type-of/" data-id="ckrwp0qgz00068lnf1gn5410h" data-title="nth-type-of 和 nth-child 的区别" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/06/25/javascript/nth-type-of/" data-id="ckryyf1q90006aqn6blrm92lj" data-title="nth-type-of 和 nth-child 的区别" class="article-share-link">Share</a>
       
       
       
@@ -541,66 +604,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/06/10/javascript/styled-component/" data-id="ckrwp0qh7000g8lnf7ogw5v5n" data-title="styled-component 工作原理" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/06/10/javascript/styled-component/" data-id="ckryyf1qg000gaqn647wp9krd" data-title="styled-component 工作原理" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-python/kmeans" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/26/python/kmeans/" class="article-date">
-  <time class="dt-published" datetime="2018-05-26T22:33:17.000Z" itemprop="datePublished">2018-05-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/26/python/kmeans/">python 实现 k-means 算法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="算法基础"><a href="#算法基础" class="headerlink" title="算法基础"></a>算法基础</h2><p>机器学习中有两大类问题，一个是分类，一个是聚类。分类是根据已知类别标号(label)的样本，训练某个分类器，使它能够对未知类别的样本进行分类。属于 <code>supervised learning</code> (监督学习)。而聚类指事先并不知道任何样本的类别标号，而希望通过某种算法来把一组未知类别的样本划分成若干类别，这在机器学习中属于 <code>unsupervised learning</code>（非监督学习）</p>
-<p>而本文要实现的 k-means 算法就是一个比较简单的聚类算法。</p>
-<p>k-means 算法的基本思想是：通过迭代寻找 k 个聚类，使得用这 k 个聚类的均值来代表相应各类样本时所得的总体误差最小。k-means 算法的基础是最小误差平方和准则。</p>
-<p>k-means 算法的代价函数如下：<br><img src="/static/kmeans/losfn.gif"></p>
-<p>x(i) 表示第 i 个样本点，μc(i)表示第 i 个聚类的均值，c 表示某个类别的集合</p>
-<p>我们希望代价函数最小，如果各类内的样本越相似，其与该类均值间的误差平方越小，则各类的误差平方和也越小。</p>
-<p>k-means 算法基本步骤如下：</p>
-        
-          <p class="article-more-link">
-            <a href="/2018/05/26/python/kmeans/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="ckrwp0qhc000s8lnf6ow1emj1" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
     </footer>
   </div>
@@ -645,7 +653,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 15px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 15px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 20px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -654,7 +662,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -665,6 +673,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
+          </li>
         
           <li>
             <a href="/2020/02/01/algorithm/longestPalindromicSubstring/">最长回文子串</a>
@@ -680,10 +692,6 @@
         
           <li>
             <a href="/2019/01/05/javascript/service-worker-example/">Service-worker 使用案例</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/04/javascript/web-worker-vs-service-worker/">Web Worker vs Service Worker</a>
           </li>
         
       </ul>
