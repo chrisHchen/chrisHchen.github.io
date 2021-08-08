@@ -14,7 +14,7 @@
 <meta property="og:description" content="momoize-one 是一个 javascript 记忆库。它能根据函数的参数来缓存函数运算的结果。momoize-one 和其他 js 记忆库相比的不同之处在于它只会缓存函数最近一次入参对应的执行结果，所以内存溢出的风险较小。 Usagememoize-one 的 api 非常简便，模块只 export 唯一一个 api： memoizeOne。先看下 memoize-one 如何使用：">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2018-05-20T23:13:01.000Z">
-<meta property="article:modified_time" content="2021-08-07T01:49:47.514Z">
+<meta property="article:modified_time" content="2021-08-08T09:59:27.093Z">
 <meta property="article:author" content="Chris Chen">
 <meta property="article:tag" content="源码解析">
 <meta name="twitter:card" content="summary">
@@ -126,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="cks14da9p00099hnl9h6m3aut" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="cks31aura000a9una5ury3swv" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -196,7 +196,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
@@ -207,6 +207,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/08/20/algorithm/string_2_interge/">字符串转换整数 (atoi)</a>
+          </li>
         
           <li>
             <a href="/2020/07/08/algorithm/reverse_integer/">整数反转</a>
@@ -222,10 +226,6 @@
         
           <li>
             <a href="/2020/02/01/algorithm/longestPalindromicSubstring/">最长回文子串</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/20/algorithm/dynamic_programming/">动态规划总结</a>
           </li>
         
       </ul>
