@@ -75,6 +75,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript/service-worker-example" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/01/05/javascript/service-worker-example/" class="article-date">
+  <time class="dt-published" datetime="2019-01-05T10:30:00.000Z" itemprop="datePublished">2019-01-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/01/05/javascript/service-worker-example/">Service-worker 使用案例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章将简单的实现一个 service-worker 的 demo</p>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p>首先熟悉一下 service worker 首次被安装后的生命周期：</p>
+<p><img src="./static/Service-worker/sw-lifecycle.png" alt="life cycle"></p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>service worker 只能部署在 HTTPS 的服务器上。因为它本身可以劫持请求并对请求返回的内容做修改，所以为了防止中间人攻击，保证浏览器收到的 service worker 没有被修改过，service worker 只能注册在部署于 HTTPS 服务器的页面上。但在开发阶段，是可以使用 localhost 的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/01/05/javascript/service-worker-example/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/01/05/javascript/service-worker-example/" data-id="cksk6j4n5000s9dne8rnhbu29" data-title="Service-worker 使用案例" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript/web-worker-vs-service-worker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/01/04/javascript/web-worker-vs-service-worker/" class="article-date">
@@ -113,7 +165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/01/04/javascript/web-worker-vs-service-worker/" data-id="cksd2fe0d0011a9nh1gd85j11" data-title="Web Worker vs Service Worker" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2019/01/04/javascript/web-worker-vs-service-worker/" data-id="cksk6j4na00119dne5dufaiec" data-title="Web Worker vs Service Worker" class="article-share-link">Share</a>
       
       
       
@@ -165,7 +217,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/09/26/python/median-o-two-sorted-arrays/" data-id="cksd2fe12002xa9nhd6xxegsa" data-title="力扣-Median of Two Sorted Arrays" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/09/26/python/median-o-two-sorted-arrays/" data-id="cksk6j4nk001l9dne05kt8r2z" data-title="力扣-Median of Two Sorted Arrays" class="article-share-link">Share</a>
       
       
       
@@ -216,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/08/25/javascript/tree-shaking/" data-id="cksd2fe0c000ya9nhcxhy1rch" data-title="简析 Tree-Shaking" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/08/25/javascript/tree-shaking/" data-id="cksk6j4n9000y9dne696a9eg8" data-title="简析 Tree-Shaking" class="article-share-link">Share</a>
       
       
       
@@ -275,7 +327,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/06/25/javascript/nth-type-of/" data-id="cksd2fe02000ha9nhb4oa73qw" data-title="nth-type-of 和 nth-child 的区别" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/06/25/javascript/nth-type-of/" data-id="cksk6j4mz000h9dnecy6i6oqk" data-title="nth-type-of 和 nth-child 的区别" class="article-share-link">Share</a>
       
       
       
@@ -332,7 +384,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/06/10/javascript/styled-component/" data-id="cksd2fe0a000ua9nh0dfn94gm" data-title="styled-component 工作原理" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/06/10/javascript/styled-component/" data-id="cksk6j4n7000u9dnegu6f3dbp" data-title="styled-component 工作原理" class="article-share-link">Share</a>
       
       
       
@@ -387,7 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="cksd2fe0j001ea9nhc3ydffeo" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/05/26/python/kmeans/" data-id="cksk6j4nj001j9dneaa7m1d9x" data-title="python 实现 k-means 算法" class="article-share-link">Share</a>
       
       
       
@@ -437,7 +489,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="cksd2fe00000ea9nhabj0f9il" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/05/20/javascript/momoize-one/" data-id="cksk6j4mx000e9dnehm7b3fwi" data-title="momoize-one 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -491,7 +543,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="cksd2fe0g0018a9nhfqg820kh" data-title="写一个 webpack loader" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/04/24/javascript/webpack-loader/" data-id="cksk6j4ne00189dneh2ag14p7" data-title="写一个 webpack loader" class="article-share-link">Share</a>
       
       
       
@@ -542,59 +594,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="cksd2fe06000oa9nhdhwm6o4j" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript/fastdom" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/02/25/javascript/fastdom/" class="article-date">
-  <time class="dt-published" datetime="2018-02-25T20:16:21.000Z" itemprop="datePublished">2018-02-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/02/25/javascript/fastdom/">fastdom 源码解析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="浏览器如何渲染页面"><a href="#浏览器如何渲染页面" class="headerlink" title="浏览器如何渲染页面"></a>浏览器如何渲染页面</h2><p>说到 <a target="_blank" rel="noopener" href="https://github.com/wilsonpage/fastdom">fastdom</a>，就必须先了解浏览器渲染一个页面的流程。通常浏览器渲染页面需要如下的步骤:<br><img src="/static/fastdom/frame.jpg" alt="页面渲染流程图"><br>（其中的 layout 有时候也称为 reflow）</p>
-<p>layout 是非常消耗性能和时间的，所以应该尽量避免 js 的执行过程中频繁触发 layout 。特别是在有动画的情况下，太多的 layout 会使得浏览器的刷新频率低于 60fps，出现动画卡顿的现象。具体的原理和细节可以参考这篇文章:</p>
-<p><a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing">Avoid Large, Complex Layouts and Layout Thrashing</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/wilsonpage/fastdom">fastdom</a> 的出现就是为了优化 layout，防止出现 forced synchronous layouts 。</p>
-        
-          <p class="article-more-link">
-            <a href="/2018/02/25/javascript/fastdom/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2018/02/25/javascript/fastdom/" data-id="cksd2fdzx000aa9nhd5r4196x" data-title="fastdom 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2018/03/16/javascript/redux/" data-id="cksk6j4n3000o9dneagvwd3jw" data-title="redux 源码分析【4.0.0-beta.2】" class="article-share-link">Share</a>
       
       
       
@@ -612,7 +612,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -623,7 +623,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul>
     </div>
   </div>
 
@@ -633,7 +633,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" rel="tag">子进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
     </div>
   </div>
 
@@ -643,7 +643,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 12.5px;">javascript</a> <a href="/tags/ngix/" style="font-size: 10px;">ngix</a> <a href="/tags/python/" style="font-size: 17.5px;">python</a> <a href="/tags/service-worker/" style="font-size: 12.5px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 15px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/ngix/" style="font-size: 10px;">ngix</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 13.33px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 16.67px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 20px;">力扣</a> <a href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">子进程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 16.67px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -652,7 +652,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
     </div>
   </div>
 
