@@ -15,7 +15,7 @@ categories: [python]
 
 ## 1. 如何让代码既能用做 module 又可以被直接执行
 
-如果是直接执行 `records.py`, 则会进入下面的函数，然后再 `cli()` 方法内部使用 `docopt` 来解析命令行参数。`docopt` 的使用可以参考之前的的文章 [envoy 源码解析](https://chrishchen.github.io/2019/10/26/python/envoy/)
+如果是直接执行 `records.py`, 则会进入下面的函数，在 `cli()` 方法内部使用了 `docopt` 来解析命令行参数。`docopt` 的使用可以参考之前的的文章 [envoy 源码解析](https://chrishchen.github.io/2019/10/26/python/envoy/)
 
 ```python
 # Run the CLI when executed directly.
@@ -23,19 +23,21 @@ if __name__ == '__main__':
     cli()
 ```
 
+<!--more-->
+
 ## 2.querystring 转 dict
 
 源码中用到将命令行输入的 `params` 转 `dict` 的函数
 
 ```python
 try:
-        params = dict([i.split('=') for i in params])
-    except ValueError:
-        print('Parameters must be given in key=value format.')
-        exit(64)
+    params = dict([i.split('=') for i in params])
+except ValueError:
+    print('Parameters must be given in key=value format.')
+    exit(64)
 ```
 
-个人感觉十分巧妙且实用，主要巧妙使用的 `dict` 构造函数:
+感觉十分巧妙且实用，用的 `dict` 构造函数:
 
 ```python
 dict(iterable) -> new dictionary initialized as if via:
@@ -43,7 +45,7 @@ dict(iterable) -> new dictionary initialized as if via:
         d[k] = v
 ```
 
-类似的，如果我们有一个 querystring 结构的字符串 `i=1&j=2`, 也可以通过下面的步骤解析为 `dict`:
+类似的，如果有一个 querystring 结构的字符串 `i=1&j=2`, 也可以通过下面的步骤解析为 `dict`:
 
 ![](/static/python/records-01.png)
 
@@ -362,7 +364,7 @@ def as_dict(self, ordered=False):
  __slots__ = ('_keys', '_values')
 ```
 
-这里应该是为了限制 Record 类的属性被随意添加。具体可以参考这篇文章[使用`__slots__`](https://www.liaoxuefeng.com/wiki/1016959663602400/1017501655757856)
+这里应该是为了限制 Record 类的属性被随意添加。具体可以参考这篇文章[使用\_\_slots\_\_](https://www.liaoxuefeng.com/wiki/1016959663602400/1017501655757856)
 
 ## 参考文章
 
@@ -374,4 +376,4 @@ def as_dict(self, ordered=False):
 
 [【Python 魔术方法】生成器(yield 表达式)](https://www.jianshu.com/p/5ee724a8c366)
 
-[使用`__slots__`](https://www.liaoxuefeng.com/wiki/1016959663602400/1017501655757856)
+[使用\_\_slots\_\_](https://www.liaoxuefeng.com/wiki/1016959663602400/1017501655757856)
