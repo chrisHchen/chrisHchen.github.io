@@ -4,15 +4,26 @@
   <meta charset="utf-8">
   
   
-  <title>Chris Chen&#39;s Blog</title>
+  <title>python records 源码解析 | Chris Chen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Chris Chen&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="总览records 库是 python 大神 kennethreitz 写的一个 SQL for Human 的 python 库，意在让书写 sql 更加的便捷和人性化。 从 README 里可以看出 records 是对 sqlalchemy 和 tablist 的一层包装，所以阅读源码主要是学习作者 pythonic 的代码编写思维。 所以本文不会纠结于源码的具体逻辑，重点是学习一些知识点，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python records 源码解析">
+<meta property="og:url" content="http://example.com/2021/08/21/python/records/index.html">
 <meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="总览records 库是 python 大神 kennethreitz 写的一个 SQL for Human 的 python 库，意在让书写 sql 更加的便捷和人性化。 从 README 里可以看出 records 是对 sqlalchemy 和 tablist 的一层包装，所以阅读源码主要是学习作者 pythonic 的代码编写思维。 所以本文不会纠结于源码的具体逻辑，重点是学习一些知识点，">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/static/python/records-01.png">
+<meta property="og:image" content="http://example.com/static/python/records-02.png">
+<meta property="og:image" content="http://example.com/static/python/records-03.png">
+<meta property="og:image" content="http://example.com/static/python/records-04.png">
+<meta property="article:published_time" content="2021-08-21T18:55:00.000Z">
+<meta property="article:modified_time" content="2021-08-22T14:33:42.430Z">
 <meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/static/python/records-01.png">
   
     <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
   
@@ -73,9 +84,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-python/records" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-python/records" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/08/21/python/records/" class="article-date">
   <time class="dt-published" datetime="2021-08-21T18:55:00.000Z" itemprop="datePublished">2021-08-21</time>
@@ -92,8 +101,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/21/python/records/">python records 源码解析</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      python records 源码解析
     </h1>
   
 
@@ -194,519 +203,20 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-others/reverse_proxy" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/02/12/others/reverse_proxy/" class="article-date">
-  <time class="dt-published" datetime="2021-02-12T07:30:20.000Z" itemprop="datePublished">2021-02-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/02/12/others/reverse_proxy/">什么是反向代理</a>
-    </h1>
+    <a href="/2021/02/12/others/reverse_proxy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">什么是反向代理</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h2><p>首先回顾下我们最常见的代理: 正向代理。</p>
-<p>我们常说的代理也就是指正向代理，正向代理的过程，它隐藏了真实的请求客户端，服务端不知道真实的客户端是谁，客户端请求的服务都被代理服务器代替来请求，某些科学上网工具扮演的就是典型的正向代理角色。用浏览器访问</p>
-<p><img src="https://pic1.zhimg.com/80/v2-07ededff1d415c1fa2db3fd89378eda0_720w.jpg?source=1940ef5c"></p>
-<h2 id="正向代理的实现"><a href="#正向代理的实现" class="headerlink" title="正向代理的实现"></a>正向代理的实现</h2>
-        
-          <p class="article-more-link">
-            <a href="/2021/02/12/others/reverse_proxy/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/12/others/reverse_proxy/" data-id="cksnb9kke001bavng9yrl3srd" data-title="什么是反向代理" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
-
-
-  
-    <article id="post-algorithm/regular_expression_matching" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/01/20/algorithm/regular_expression_matching/" class="article-date">
-  <time class="dt-published" datetime="2021-01-20T10:32:00.000Z" itemprop="datePublished">2021-01-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/01/20/algorithm/regular_expression_matching/">正则表达式匹配</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你一个字符串  s  和一个字符规律  p，请你来实现一个支持 ‘.’  和  ‘*‘  的正则表达式匹配。</p>
-<p>‘.’ 匹配任意单个字符<br>‘*‘ 匹配零个或多个前面的那一个元素<br>所谓匹配，是要涵盖   整个   字符串  s 的，而不是部分字符串。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>首先状态 dp 一定能自己想出来。<br>dp[i][j] 表示 s 的前 i 个是否能被 p 的前 j 个匹配</p>
-<ol>
-<li><p>如果 p.charAt(j) == s.charAt(i) : dp[i][j] = dp[i-1][j-1]；</p>
-</li>
-<li><p>如果 p.charAt(j) == ‘.’ : dp[i][j] = dp[i-1][j-1]；</p>
-</li>
-<li><p>如果 p.charAt(j) == ‘*‘：</p>
-<ul>
-<li>如果 p.charAt(j-1) != s.charAt(i) : dp[i][j] = dp[i][j-2] // in this case, a* only counts as empty</li>
-<li>如果 p.charAt(j-1) == s.charAt(i) or p.charAt(i-1) == ‘.’：<ul>
-<li>dp[i][j] = dp[i-1][j] //in this case, a* counts as multiple a</li>
-<li>or dp[i][j] = dp[i][j-1] // in this case, a* counts as single a</li>
-<li>or dp[i][j] = dp[i][j-2] // in this case, a* counts as empty</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-        
-          <p class="article-more-link">
-            <a href="/2021/01/20/algorithm/regular_expression_matching/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/20/algorithm/regular_expression_matching/" data-id="cksnb9kjl0004avngfssb5v8a" data-title="正则表达式匹配" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-algorithm/string_2_interge" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/08/20/algorithm/string_2_interge/" class="article-date">
-  <time class="dt-published" datetime="2020-08-20T11:30:00.000Z" itemprop="datePublished">2020-08-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/08/20/algorithm/string_2_interge/">字符串转换整数 (atoi)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。</p>
-<p>函数 myAtoi(string s) 的算法如下：</p>
-<p>读入字符串并丢弃无用的前导空格</p>
-<p>检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。</p>
-<p>读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。</p>
-<p>将前面步骤读入的这些数字转换为整数（即，”123” -&gt; 123， “0032” -&gt; 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。</p>
-<p>如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −2<sup>31</sup> 的整数应该被固定为 −2<sup>31</sup> ，大于 2<sup>31</sup> − 1 的整数应该被固定为 2<sup>31</sup> − 1 。</p>
-<p>返回整数作为最终结果。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/08/20/algorithm/string_2_interge/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/08/20/algorithm/string_2_interge/" data-id="cksnb9kjp0006avngd1zje9bp" data-title="字符串转换整数 (atoi)" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-algorithm/reverse_integer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/07/08/algorithm/reverse_integer/" class="article-date">
-  <time class="dt-published" datetime="2020-07-08T12:30:00.000Z" itemprop="datePublished">2020-07-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/07/08/algorithm/reverse_integer/">整数反转</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>这是 leetcode 上一道难度为简单的算法题：</p>
-<p>给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。<br>如果反转后整数超过 32 位的有符号整数的范围 <code>[−2<sup>31</sup>,  2<sup>31</sup> − 1] </code>，就返回 0。</p>
-<p>虽然是一个简单题，但如果你对 python 的负数取余和整数除法不熟悉的话，很容易踩坑🙂。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/07/08/algorithm/reverse_integer/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/07/08/algorithm/reverse_integer/" data-id="cksnb9kjo0005avng2gr02uev" data-title="整数反转" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript/webpack-loader-vs-plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/" class="article-date">
-  <time class="dt-published" datetime="2020-05-11T20:05:50.000Z" itemprop="datePublished">2020-05-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>webpack 配置文件中最常见同时也是配置最繁琐的就是 loader 和 plugin。本文是我个人对 loader 和 plugin 理解的总结。可能有不准确的地方，后续会再次修改。</p>
-<h2 id="什么是-Loader"><a href="#什么是-Loader" class="headerlink" title="什么是 Loader ?"></a>什么是 Loader ?</h2><p>Loader 翻译过来可以叫<strong>加载器</strong>。官方文档对 loader 的<a target="_blank" rel="noopener" href="https://webpack.js.org/concepts/#loaders">解释原文</a>如下:</p>
-<blockquote style='font-size:12px;text-align:left'>
-Out of the box, webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
-
-<p>Loaders are transformations that are applied to the source code of a module. They allow you to pre-process files as you import or “load” them. Thus, loaders are kind of like “tasks” in other build tools and provide a powerful way to handle front-end build steps. Loaders can transform files from a different language (like TypeScript) to JavaScript or load inline images as data URLs. Loaders even allow you to do things like import CSS files directly from your JavaScript modules!</p>
-</blockquote>
-
-<p><strong>loader 是一个转换器，将 A 文件进行编译成 B 文件，属于单纯的文件转换过程</strong>；</p>
-<p>我总结为如下几点：</p>
-<ol>
-<li>loader 需要处理的是除了 js 和 json 之外的文件类型。</li>
-<li>loader 将这类文件转换(transform)为应用可以消费的合法模块。</li>
-</ol>
-<p>第一点很好理解。第二点就有点抽象了，什么是“应用可以消费的合法模块”呢？</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/" data-id="cksnb9kkb0015avng1qgs9bt5" data-title="webpack loader vs plugin" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-algorithm/zigzag_conversion" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/08/algorithm/zigzag_conversion/" class="article-date">
-  <time class="dt-published" datetime="2020-03-08T12:30:00.000Z" itemprop="datePublished">2020-03-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/08/algorithm/zigzag_conversion/">Z 字形变换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>这是 leetcode 上一道难度为中等的算法题：</p>
-<p>将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。<br>比如输入字符串为 “ABCDEFGHIJKLMN” 行数为 3 时，排列如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A   E   I   M</span><br><span class="line">B D F H J L N</span><br><span class="line">C   G   K</span><br></pre></td></tr></table></figure>
-
-<p>而输出需要从左往右逐行读取，产生出一个新的字符串：”AEIMBDFHJINCGK”。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>有很大一部分算法题的思路都源于找到其中的<strong>规律</strong>。</p>
-<p>输入字符串 s 经过转换后有 numRows 行，如果我们遍历 s 的每个字符 c 会发现，c 的行序列总是从 0 开始增长到 numRows - 1, 然后又从 numRows - 1 回到 0，比如上面的例子：</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/03/08/algorithm/zigzag_conversion/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/03/08/algorithm/zigzag_conversion/" data-id="cksnb9kjs0009avngh7tlbk6h" data-title="Z 字形变换" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-algorithm/longestPalindromicSubstring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/02/01/algorithm/longestPalindromicSubstring/" class="article-date">
-  <time class="dt-published" datetime="2020-02-01T12:06:22.000Z" itemprop="datePublished">2020-02-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/01/algorithm/longestPalindromicSubstring/">最长回文子串</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是回文串"><a href="#什么是回文串" class="headerlink" title="什么是回文串"></a>什么是回文串</h2><p>最长回文子串是面试中经常问到的算法题。首先得明确什么是回文串？回文串就是正着读和反正读都一样的字符串。</p>
-<p>比如 <code>aba</code> 和 <code>acca</code></p>
-<h2 id="回文串的特点"><a href="#回文串的特点" class="headerlink" title="回文串的特点"></a>回文串的特点</h2><p>回文串的特点：如果一个字符串 s 是回文串，则 s 去掉头尾的字符后的字符串依然是回文串。比如 <code>acbca</code> 是回文串，则去掉头尾的 a 后的字符串 <code>cbc</code> 也肯定是回文串，再迭代一下,去掉头尾的 c 后形成的字符串 <code>b</code> 也是回文串(单字母的字符串永远是回文串)。</p>
-<p>所以寻找回文串的问题核心思想是：从中间开始向两边扩散来判断回文串。</p>
-<p>这里要注意的一点是，回文串的长度可能是奇数也可能是偶数，比如 <code>acbca</code> 和 <code>acca</code> 都是回文串。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/02/01/algorithm/longestPalindromicSubstring/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/" data-id="cksnb9kjh0001avngd5jk00m4" data-title="最长回文子串" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-algorithm/dynamic_programming" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/01/20/algorithm/dynamic_programming/" class="article-date">
-  <time class="dt-published" datetime="2020-01-20T10:30:00.000Z" itemprop="datePublished">2020-01-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/01/20/algorithm/dynamic_programming/">动态规划总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近<a target="_blank" rel="noopener" href="https://github.com/labuladong/fucking-algorithm">fucking-algorithm</a> 这个算法教学库特别火。其中介绍了很多算法的“套路”，对算法初学者来说非常适用。以下是我读完 <a target="_blank" rel="noopener" href="https://labuladong.gitee.io/algo/3/23/57/">动态规划解题核心框架</a> 一节后的归纳总结。</p>
-<h2 id="首先，动态规划问题的一般形式就是求最值"><a href="#首先，动态规划问题的一般形式就是求最值" class="headerlink" title="首先，动态规划问题的一般形式就是求最值"></a>首先，动态规划问题的一般形式就是求最值</h2><p>这个总结非常有用。如果工作或者面试中碰巧遇到最值问题，又没有解答头绪的时候，可以尝试着用动态规划的思路去分析一下。我想所谓的算法“套路”，无非就是看到 A 就自然会去联系到 B 的路数吧。</p>
-<h2 id="求解动态规划的核心问题是穷举"><a href="#求解动态规划的核心问题是穷举" class="headerlink" title="求解动态规划的核心问题是穷举"></a>求解动态规划的核心问题是穷举</h2><p>因为要求最值，肯定要把所有可行的答案穷举出来，然后在其中找最值呗。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/01/20/algorithm/dynamic_programming/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/01/20/algorithm/dynamic_programming/" data-id="cksnb9kjc0000avng573jb2kf" data-title="动态规划总结" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript/react-hook-indepth" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/05/javascript/react-hook-indepth/" class="article-date">
-  <time class="dt-published" datetime="2019-11-05T20:12:20.000Z" itemprop="datePublished">2019-11-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/05/javascript/react-hook-indepth/">React Hook 工作原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自从 react 推出 hook 后就一直觉得 hook 的实现挺神秘的，这篇文章主要记录下自己对 react hook 底层实现的理解，并用代码模拟下 react hook 的实现原理。</p>
-<h2 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h2><p>useState 可以说是整个 hook 的基础，它使得函数组件也拥有自己的状态。使用起来很简单:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [count, setCount] = useState(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>那么我们可以先简单的按自己的理解实现一下 useState 的逻辑：</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/11/05/javascript/react-hook-indepth/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/11/05/javascript/react-hook-indepth/" data-id="cksnb9kk1000mavngaoiq93jc" data-title="React Hook 工作原理" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         
