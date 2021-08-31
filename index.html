@@ -75,6 +75,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-python/pipx" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/31/python/pipx/" class="article-date">
+  <time class="dt-published" datetime="2021-08-31T21:33:17.000Z" itemprop="datePublished">2021-08-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/08/31/python/pipx/">pipx 源码解析【1】</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="pipx-是什么？"><a href="#pipx-是什么？" class="headerlink" title="pipx 是什么？"></a>pipx 是什么？</h2><p><a target="_blank" rel="noopener" href="https://github.com/pypa/pipx">pipx</a> 是一个 python 包管理工具。但和 <code>pip</code> 又有区别: <code>pip</code> 管理 python 的类库（libraries）和应用（apps），而 <code>pipx</code> 专门管理 python 的应用（apps），另外在此基础上添加了环境隔离的能力。总体上来说有点像 Mac 系统上的 <code>brew</code>。</p>
+<p>类库和应用怎么区分？我个人理解这里的应用主要指的是可以直接在命令行里执行的脚本，也就是发布时会在 <code>setup.py</code> 写入 <code>console_scripts</code> 字段的 python 库( 安装后生成了可执行脚本并放入 <code>bin</code> 文件夹)。举个 🌰 ，比如 <code>pip</code>, <code>virtualenv</code> 这类可以直接在命令行执行的就是应用，而 <code>numpy</code>, <code>pandas</code> 这类在代码中 import 的则属于类库。另外 <code>pipx</code> 自己本身也是一个应用。</p>
+<p>为什么要用隔离环境来单独管理应用呢？我能想到很明显的一个原因是各个应用依赖的版本冲突问题。举个 🌰 ，需要全局安装应用 A 和 应用 B， A 和 B 都依赖某一个类库 C，但依赖的版本不一样，A 依赖 C=1.0，B 依赖 C=2.0。如果先装了 A，在没有环境隔离的情况下，全局的 <code>site-package</code> 下面会有 C=1.0 的版本，这时如果我再安装 B，因为 B 依赖 C=2.0，所以安装完成后会将全局 <code>site-package</code> 里的 C=1.0 替换为 C=2.0。这可能会导致应用 A 无法正常工作。</p>
+<p>更详细的可以参照 <code>pipx</code> 的<a target="_blank" rel="noopener" href="https://pypa.github.io/pipx/">文档</a></p>
+        
+          <p class="article-more-link">
+            <a href="/2021/08/31/python/pipx/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/31/python/pipx/" data-id="ckt097x76001o9cn00raefu9t" data-title="pipx 源码解析【1】" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/venv/" rel="tag">venv</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-python/records" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/08/21/python/records/" class="article-date">
@@ -114,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/08/21/python/records/" data-id="cksnblmn9001oavna8l15csfi" data-title="python records 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/08/21/python/records/" data-id="ckt097x7q003e9cn07bjtbz2h" data-title="python records 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -166,7 +218,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/12/others/reverse_proxy/" data-id="cksnblmn2001bavnaamzghifx" data-title="什么是反向代理" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/12/others/reverse_proxy/" data-id="ckt097x71001b9cn01dfl8ndp" data-title="什么是反向代理" class="article-share-link">Share</a>
       
       
       
@@ -234,7 +286,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/20/algorithm/regular_expression_matching/" data-id="cksnblmm60004avna3zsz95rz" data-title="正则表达式匹配" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/20/algorithm/regular_expression_matching/" data-id="ckt097x6e00049cn03zxs0usd" data-title="正则表达式匹配" class="article-share-link">Share</a>
       
       
       
@@ -290,7 +342,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/08/20/algorithm/string_2_interge/" data-id="cksnblmm90006avnadi2ffthv" data-title="字符串转换整数 (atoi)" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/08/20/algorithm/string_2_interge/" data-id="ckt097x6g00069cn03x561wza" data-title="字符串转换整数 (atoi)" class="article-share-link">Share</a>
       
       
       
@@ -341,7 +393,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/07/08/algorithm/reverse_integer/" data-id="cksnblmm70005avna5e6p5of3" data-title="整数反转" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/07/08/algorithm/reverse_integer/" data-id="ckt097x6f00059cn05xancrvs" data-title="整数反转" class="article-share-link">Share</a>
       
       
       
@@ -404,7 +456,7 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/" data-id="cksnblmmz0015avnaawj978kx" data-title="webpack loader vs plugin" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/" data-id="ckt097x6y00159cn04dqybz42" data-title="webpack loader vs plugin" class="article-share-link">Share</a>
       
       
       
@@ -459,7 +511,7 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/03/08/algorithm/zigzag_conversion/" data-id="cksnblmmd0009avna88091r6a" data-title="Z 字形变换" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/03/08/algorithm/zigzag_conversion/" data-id="ckt097x6i00099cn0bijtfnri" data-title="Z 字形变换" class="article-share-link">Share</a>
       
       
       
@@ -512,7 +564,7 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/" data-id="cksnblmm10001avnaeipub6gz" data-title="最长回文子串" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/02/01/algorithm/longestPalindromicSubstring/" data-id="ckt097x6a00019cn0atx72ct6" data-title="最长回文子串" class="article-share-link">Share</a>
       
       
       
@@ -563,64 +615,11 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/01/20/algorithm/dynamic_programming/" data-id="cksnblmlv0000avna11yafuzd" data-title="动态规划总结" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/01/20/algorithm/dynamic_programming/" data-id="ckt097x6500009cn04wjz3qi4" data-title="动态规划总结" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript/react-hook-indepth" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/05/javascript/react-hook-indepth/" class="article-date">
-  <time class="dt-published" datetime="2019-11-05T20:12:20.000Z" itemprop="datePublished">2019-11-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/05/javascript/react-hook-indepth/">React Hook 工作原理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自从 react 推出 hook 后就一直觉得 hook 的实现挺神秘的，这篇文章主要记录下自己对 react hook 底层实现的理解，并用代码模拟下 react hook 的实现原理。</p>
-<h2 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h2><p>useState 可以说是整个 hook 的基础，它使得函数组件也拥有自己的状态。使用起来很简单:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [count, setCount] = useState(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>那么我们可以先简单的按自己的理解实现一下 useState 的逻辑：</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/11/05/javascript/react-hook-indepth/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/11/05/javascript/react-hook-indepth/" data-id="cksnblmmo000mavna0l423xpq" data-title="React Hook 工作原理" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
 
     </footer>
   </div>
@@ -655,7 +654,7 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" rel="tag">子进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/venv/" rel="tag">venv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" rel="tag">子进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
     </div>
   </div>
 
@@ -665,7 +664,7 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 12.5px;">javascript</a> <a href="/tags/ngix/" style="font-size: 10px;">ngix</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 12.5px;">service-worker</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 17.5px;">力扣</a> <a href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">子进程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 15px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 17.5px;">算法</a>
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 12.5px;">javascript</a> <a href="/tags/ngix/" style="font-size: 10px;">ngix</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 12.5px;">service-worker</a> <a href="/tags/venv/" style="font-size: 10px;">venv</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 17.5px;">力扣</a> <a href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">子进程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 15px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 17.5px;">算法</a>
     </div>
   </div>
 
@@ -687,6 +686,10 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
       <ul>
         
           <li>
+            <a href="/2021/08/31/python/pipx/">pipx 源码解析【1】</a>
+          </li>
+        
+          <li>
             <a href="/2021/08/21/python/records/">python records 源码解析</a>
           </li>
         
@@ -700,10 +703,6 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
         
           <li>
             <a href="/2020/08/20/algorithm/string_2_interge/">字符串转换整数 (atoi)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/07/08/algorithm/reverse_integer/">整数反转</a>
           </li>
         
       </ul>
