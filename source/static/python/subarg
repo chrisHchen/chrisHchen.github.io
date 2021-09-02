@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+# -*- coding: utf-8 -*-
+import argparse
+
+# create the top-level parser
+parser = argparse.ArgumentParser(prog='CliTest', description='this is a test cli')
+parser.add_argument('--foo', action='store_true', help='foo help')
+parser.add_argument('--bar', help='bar help')
+subparsers = parser.add_subparsers(
+  dest="command", description="Get help for commands with pipx COMMAND --help"
+)
+
+# create the parser for the "install" command
+parser_install = subparsers.add_parser('install', help='install help msg', description='desc for install')
+parser_install.add_argument('name', type=str, help='name help msg')
+parser_install.add_argument('version', type=int, help='version help msg', default=1)
+
+# create the parser for the "uninstall" command
+parser_uninstall = subparsers.add_parser('uninstall', help='uninstall help msg', description='desc for uninstall')
+parser_uninstall.add_argument('name', type=str, help='name help msg')
+parser_uninstall.add_argument('version', type=int, help='version help msg')
+
+# create the parser for "list" command
+parser_list = subparsers.add_parser("list", help='help msg for list', description='desc for list')
+parser_list.add_argument("names", nargs="+", default=[], help='list names help msg')
+
+
+parsed_args = parser.parse_args()
+
+print(parsed_args)
