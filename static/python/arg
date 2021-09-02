@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+# -*- coding: utf-8 -*-
+
+import argparse
+
+parser = argparse.ArgumentParser(prog='CliTest', description='this is a test cli')
+
+parser.add_argument('--foo', '-f', help="arg for foo")
+parser.add_argument('--biz', help="arg for biz", default='b')
+parser.add_argument('--bar', help="flag for bar",  action='store_true')
+
+parsed_args = parser.parse_args()
+
+print(parsed_args)
