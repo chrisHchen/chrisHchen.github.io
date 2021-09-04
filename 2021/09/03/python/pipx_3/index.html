@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>pipx 源码解析【3】- pipx run | Chris Chen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="执行命令上一篇学习了如何解析参数，这一篇主要学习如何执行命令。pipx 的命令(command)包括 run, install, inject, upgrade, upgrade-all, list, uninstall, uninstall-all, reinstall, reinstall-all。 run_pipx_command 作为命令的主入口，将不同的 command 分配给不同的模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pipx 源码解析【3】- pipx run">
+<meta property="og:url" content="http://example.com/2021/09/03/python/pipx_3/index.html">
+<meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="执行命令上一篇学习了如何解析参数，这一篇主要学习如何执行命令。pipx 的命令(command)包括 run, install, inject, upgrade, upgrade-all, list, uninstall, uninstall-all, reinstall, reinstall-all。 run_pipx_command 作为命令的主入口，将不同的 command 分配给不同的模块">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/static/python/pipx1.png">
+<meta property="article:published_time" content="2021-09-03T20:00:38.000Z">
+<meta property="article:modified_time" content="2021-09-04T09:00:55.386Z">
+<meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="venv">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/static/python/pipx1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="https://assets.imedao.com/images/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Chris Chen&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">welcome to my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-python/pipx_3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/03/python/pipx_3/" class="article-date">
+  <time class="dt-published" datetime="2021-09-03T20:00:38.000Z" itemprop="datePublished">2021-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      pipx 源码解析【3】- pipx run
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h2><p>上一篇学习了如何解析参数，这一篇主要学习如何执行命令。<code>pipx</code> 的命令(command)包括 <code>run</code>, <code>install</code>, <code>inject</code>, <code>upgrade</code>, <code>upgrade-all</code>, <code>list</code>, <code>uninstall</code>, <code>uninstall-all</code>, <code>reinstall</code>, <code>reinstall-all</code>。</p>
+<p><code>run_pipx_command</code> 作为命令的主入口，将不同的 command 分配给不同的模块处理。处理 <code>run</code> 命令是 <code>run.py</code>。</p>
+<p>这篇就先学一个 <code>run</code>， 我也将通过记录知识点的方式学习。</p>
+<h2 id="知识点：下载网络文件"><a href="#知识点：下载网络文件" class="headerlink" title="知识点：下载网络文件"></a>知识点：下载网络文件</h2><p><code>run.py</code> 首先判断参数是否为 url，且以 <code>.py</code> 结尾，如果为真就直接从 url 下载这个文件:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">if</span> urllib.parse.urlparse(app).scheme:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> app.endswith(<span class="string">&quot;.py&quot;</span>):</span><br><span class="line">            <span class="keyword">raise</span> PipxError(</span><br><span class="line">                <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                pipx will only execute apps from the internet directly if they</span></span><br><span class="line"><span class="string">                end with &#x27;.py&#x27;. To run from an SVN, try pipx --spec URL BINARY</span></span><br><span class="line"><span class="string">                &quot;&quot;&quot;</span></span><br><span class="line">            )</span><br><span class="line">        logger.info(<span class="string">&quot;Detected url. Downloading and executing as a Python file.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        content = _http_get_request(app)</span><br><span class="line">        exec_app([<span class="built_in">str</span>(python), <span class="string">&quot;-c&quot;</span>, content])</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_http_get_request</span>(<span class="params">url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        res = urllib.request.urlopen(url)</span><br><span class="line">        charset = res.headers.get_content_charset() <span class="keyword">or</span> <span class="string">&quot;utf-8&quot;</span></span><br><span class="line">        <span class="keyword">return</span> res.read().decode(charset)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.debug(<span class="string">&quot;Uncaught Exception:&quot;</span>, exc_info=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">raise</span> PipxError(<span class="built_in">str</span>(e))</span><br></pre></td></tr></table></figure>
+
+<p>其中下载网络文件用了 <code>urllib.request.urlopen(url)</code> 这个方法。下载完成后进入 <code>exec_app</code> 方法。</p>
+<span id="more"></span>
+
+<h2 id="知识点-获取-调整系统环境变量"><a href="#知识点-获取-调整系统环境变量" class="headerlink" title="知识点: 获取/调整系统环境变量"></a>知识点: 获取/调整系统环境变量</h2><p><code>exec_app</code> 方法内首先获取了系统环境变量 <code>env = dict(os.environ)</code>。然后又设置了系统变量 <code>PYTHONPATH</code>。<br>另外也可以学习一下 python 里 <code>join</code> 和 <code>split</code> 的用法。然后按操作系统的不同分别调用了不同的执行方法，源码里也有注释。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exec_app</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    cmd: <span class="type">Sequence</span>[<span class="type">Union</span>[<span class="built_in">str</span>, Path]],</span></span></span><br><span class="line"><span class="params"><span class="function">    env: <span class="type">Optional</span>[<span class="type">Dict</span>[<span class="built_in">str</span>, <span class="built_in">str</span>]] = <span class="literal">None</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    extra_python_paths: <span class="type">Optional</span>[<span class="type">List</span>[<span class="built_in">str</span>]] = <span class="literal">None</span>,</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) -&gt; NoReturn:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Run command, do not return</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    POSIX: replace current processs with command using os.exec*()</span></span><br><span class="line"><span class="string">    Windows: Use subprocess and sys.exit() to run command</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> env <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        env = <span class="built_in">dict</span>(os.environ)</span><br><span class="line">    env = _fix_subprocess_env(env)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> extra_python_paths <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        env[<span class="string">&quot;PYTHONPATH&quot;</span>] = os.path.pathsep.join(</span><br><span class="line">            extra_python_paths</span><br><span class="line">            + (</span><br><span class="line">                os.getenv(<span class="string">&quot;PYTHONPATH&quot;</span>, <span class="string">&quot;&quot;</span>).split(os.path.pathsep)</span><br><span class="line">                <span class="keyword">if</span> os.getenv(<span class="string">&quot;PYTHONPATH&quot;</span>)</span><br><span class="line">                <span class="keyword">else</span> []</span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># make sure we show cursor again before handing over control</span></span><br><span class="line">    show_cursor()</span><br><span class="line"></span><br><span class="line">    logger.info(<span class="string">&quot;exec_app: &quot;</span> + <span class="string">&quot; &quot;</span>.join([<span class="built_in">str</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> cmd]))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> WINDOWS:</span><br><span class="line">        sys.exit(</span><br><span class="line">            subprocess.run(</span><br><span class="line">                cmd,</span><br><span class="line">                env=env,</span><br><span class="line">                stdout=<span class="literal">None</span>,</span><br><span class="line">                stderr=<span class="literal">None</span>,</span><br><span class="line">                encoding=<span class="string">&quot;utf-8&quot;</span>,</span><br><span class="line">                universal_newlines=<span class="literal">True</span>,</span><br><span class="line">            ).returncode</span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        os.execvpe(<span class="built_in">str</span>(cmd[<span class="number">0</span>]), [<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> cmd], env)</span><br></pre></td></tr></table></figure>
+
+<p><code>os.execvpe</code> 函数在 $PATH 上寻找并执行可执行文件，并且会替代原来的进程, 具体的用法可以看下面的例子:</p>
+<img src="/static/python/pipx1.png" alt="os.execvpe" width="640" align="bottom" />
+
+<p>可以看到运行完以后退出了 python 的 REPL,说明已经替换了原来的进程。</p>
+<p>另外 <code>python -c</code> 是执行源码的命令，而我们平时常用的是没有 <code>-c</code> 的，是直接执行文件的命令。</p>
+<p>更多关于 <code>os.exec*</code> 的内容可以参考下面文章：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011630575/article/details/50917476">Python:OS 模块 – 进程管理</a><br><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/os.html?highlight=execvpe#os.execvpe">python 文档: os 模块</a></p>
+<h2 id="知识点-pypackages"><a href="#知识点-pypackages" class="headerlink" title="知识点: __pypackages__"></a>知识点: <code>__pypackages__</code></h2><p>上面说的是从网络 url 下载 <code>.py</code> 文件并执行，如果不是 <code>.py</code> 而是 binary 该如何处理呢？也就是运行 <code>pipx run BINARY</code>的情况。这里涉及到一个概念 <code>__pypackages__</code> 的概念，也称为 <code>python local packages directory</code>。具体定义可以看<a target="_blank" rel="noopener" href="https://github.com/cs01/pythonloc">这里</a>:</p>
+<blockquote style='text-align:left'>
+pythonloc is a drop in replacement for python and pip that automatically recognizes a __pypackages__ directory and prefers importing packages installed in this location over user or global site-packages. If you are familiar with node, __pypackages__ works similarly to node_modules.
+</blockquote>
+
+<p><code>pipx</code> 也支持这个特性, 通过下面的函数获得了 <code>local packages</code> 的 binary 文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_pypackage_bin_path</span>(<span class="params">binary_name: <span class="built_in">str</span></span>) -&gt; Path:</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        Path(<span class="string">&quot;__pypackages__&quot;</span>)</span><br><span class="line">        / (<span class="built_in">str</span>(sys.version_info.major) + <span class="string">&quot;.&quot;</span> + <span class="built_in">str</span>(sys.version_info.minor))</span><br><span class="line">        / <span class="string">&quot;lib&quot;</span></span><br><span class="line">        / <span class="string">&quot;bin&quot;</span></span><br><span class="line">        / binary_name</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p>如果上面的函数找到了对应的 <code>binary</code>, 这会进入下面 <code>run_pypackage_bin</code> 函数，内部最后还是调用到上文提到过的 <code>exec_app</code> 函数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_pypackage_bin</span>(<span class="params">bin_path: Path, args: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; NoReturn:</span></span><br><span class="line">    exec_app(</span><br><span class="line">        [<span class="built_in">str</span>(bin_path.resolve())] + args,</span><br><span class="line">        extra_python_paths=[<span class="string">&quot;.&quot;</span>, <span class="built_in">str</span>(bin_path.parent.parent)],</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h2 id="知识点-venv"><a href="#知识点-venv" class="headerlink" title="知识点: venv"></a>知识点: venv</h2><p>上文说到了网络 <code>.py</code> 文件和本地已经存在 <code>binary</code> 的情况。下面会处理本地不存在 <code>binary</code> 的情况。<br>这时需要首先下载 binary，然后才能执行。这时就存在一个存放路径的目录问题。<code>pipx</code> 的介绍中提到对 app 有环境隔离的能力，这里就是用了 venv 模块的能力。</p>
+<p>首先用 hash 算法获得一个唯一的 venv 路径：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_temporary_venv_path</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    package_or_url: <span class="built_in">str</span>, python: <span class="built_in">str</span>, pip_args: <span class="type">List</span>[<span class="built_in">str</span>], venv_args: <span class="type">List</span>[<span class="built_in">str</span>]</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) -&gt; Path:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Computes deterministic path using hashing function on arguments relevant</span></span><br><span class="line"><span class="string">    to virtual environment&#x27;s end state. Arguments used should result in idempotent</span></span><br><span class="line"><span class="string">    virtual environment. (i.e. args passed to app aren&#x27;t relevant, but args</span></span><br><span class="line"><span class="string">    passed to venv creation are.)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    m = hashlib.sha256()</span><br><span class="line">    m.update(package_or_url.encode())</span><br><span class="line">    m.update(python.encode())</span><br><span class="line">    m.update(<span class="string">&quot;&quot;</span>.join(pip_args).encode())</span><br><span class="line">    m.update(<span class="string">&quot;&quot;</span>.join(venv_args).encode())</span><br><span class="line">    venv_folder_name = m.hexdigest()[<span class="number">0</span>:<span class="number">15</span>]  <span class="comment"># 15 chosen arbitrarily</span></span><br><span class="line">    <span class="keyword">return</span> Path(constants.PIPX_VENV_CACHEDIR) / venv_folder_name</span><br></pre></td></tr></table></figure>
+
+<p>其中的 <code>PIPX_VENV_CACHEDIR</code> 指向 <code>Path.home() / &quot;.local/pipx&quot; / &quot;.cache&quot;</code> 。所以最终临时目录指向是用户目录下的 <code>~/.local/pipx/.cache/xxx</code>,其中 <code>xxx</code> 就是通过 <code>package_or_url</code>, <code>python 路径</code>，<code>pip_args</code>, <code>venv_args</code> 这几个参数计算出来的 15 位 hash 值。</p>
+<p>接下来获得了 <code>Venv</code> 的实例：<code>venv = Venv(venv_dir)</code>，Vene 类是 pipx 对虚拟目录的抽象，提供了一些列对虚拟目录操作的方法。个人感觉用一个例子来说明这个类会更加直观。所以假设某个 run 某个 app 时获取的 hash 值为 <code>abc</code>，那么对应 <code>venv_dir</code>就是 <code>~/.local/pipx/.cache/abc</code>，实例化 Venv 后对应的一些属性的值如下(POSIX)：</p>
+<p><code>venv.root = ~/.local/pipx/.cache/abc</code><br><code>venv.bin_path = ~/.local/pipx/.cache/abc/bin</code><br><code>venv.python_path = ~/.local/pipx/.cache/abc/bin/python</code><br><code>venv.python = 系统默认 python 路径</code></p>
+<p>接下来执行的代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> venv.has_app(app, app_filename):</span><br><span class="line">        logger.info(<span class="string">f&quot;Reusing cached venv <span class="subst">&#123;venv_dir&#125;</span>&quot;</span>)</span><br><span class="line">        venv.run_app(app, app_filename, app_args)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger.info(<span class="string">f&quot;venv location is <span class="subst">&#123;venv_dir&#125;</span>&quot;</span>)</span><br><span class="line">        _download_and_run(</span><br><span class="line">            Path(venv_dir),</span><br><span class="line">            package_or_url,</span><br><span class="line">            app,</span><br><span class="line">            app_filename,</span><br><span class="line">            app_args,</span><br><span class="line">            python,</span><br><span class="line">            pip_args,</span><br><span class="line">            venv_args,</span><br><span class="line">            use_cache,</span><br><span class="line">            verbose,</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>venv</code> 里之前就下载了这个 app，并且参数 <code>use_cache</code> 是 true，就直接执行，否则先下载再执行。<br><code>venv.run_app</code> 进过一些列 <code>entry_point</code> 的解析后最终还是调用了上文提到过的 <code>exec_app</code>。</p>
+<p>如果之前没有下载过，则进入 <code>_download_and_run</code> 函数，并创建一个新的虚拟环境 <code>venv.create_venv(venv_args, pip_args)</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_venv</span>(<span class="params">self, venv_args: <span class="type">List</span>[<span class="built_in">str</span>], pip_args: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">        <span class="keyword">with</span> animate(<span class="string">&quot;creating virtual environment&quot;</span>, self.do_animation):</span><br><span class="line">            cmd = [self.python, <span class="string">&quot;-m&quot;</span>, <span class="string">&quot;venv&quot;</span>, <span class="string">&quot;--without-pip&quot;</span>]</span><br><span class="line">            venv_process = run_subprocess(cmd + venv_args + [<span class="built_in">str</span>(self.root)])</span><br><span class="line">        subprocess_post_check(venv_process)</span><br><span class="line"></span><br><span class="line">        shared_libs.create(self.verbose)</span><br><span class="line">        pipx_pth = get_site_packages(self.python_path) / PIPX_SHARED_PTH</span><br><span class="line">        <span class="comment"># write path pointing to the shared libs site-packages directory</span></span><br><span class="line">        <span class="comment"># example pipx_pth location:</span></span><br><span class="line">        <span class="comment">#   ~/.local/pipx/venvs/black/lib/python3.8/site-packages/pipx_shared.pth</span></span><br><span class="line">        <span class="comment"># example shared_libs.site_packages location:</span></span><br><span class="line">        <span class="comment">#   ~/.local/pipx/shared/lib/python3.6/site-packages</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment"># https://docs.python.org/3/library/site.html</span></span><br><span class="line">        <span class="comment"># A path configuration file is a file whose name has the form &#x27;name.pth&#x27;.</span></span><br><span class="line">        <span class="comment"># its contents are additional items (one per line) to be added to sys.path</span></span><br><span class="line">        pipx_pth.write_text(<span class="string">f&quot;<span class="subst">&#123;shared_libs.site_packages&#125;</span>\n&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"></span><br><span class="line">        self.pipx_metadata.venv_args = venv_args</span><br><span class="line">        self.pipx_metadata.python_version = self.get_python_version()</span><br></pre></td></tr></table></figure>
+
+<p>创建虚拟目录使用的是 <code>run_subprocess</code>, 最后执行到的是 <code>subprocess.run</code> 函数。注意 <code>subprocess.run</code> 不会替换原来的进程，(和上面的 <code>os.execvpe</code> 不一样)，因为虚拟目录创建完成后主进程还有别的工作要完成。</p>
+<p>创建虚拟目录用的是 python 内置模块 <code>venv</code>, 使用的命令是 <code>python -m venv --without-pip ~/.local/pipx/.cache/abc</code>。</p>
+<p>虚拟目录创建完成后执行 <code>venv.install_package</code> 方法安装 app，安装 app 用的是 <code>pip</code>, 这里用的 python 是虚拟目录里的 python， 安装的目录是虚拟目录下的 <code>lib/pythonx.x/site-package</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cmd = (</span><br><span class="line">    [<span class="built_in">str</span>(self.python_path), <span class="string">&quot;-m&quot;</span>, <span class="string">&quot;pip&quot;</span>, <span class="string">&quot;install&quot;</span>]</span><br><span class="line">    + pip_args</span><br><span class="line">    + [package_or_url]</span><br><span class="line">)</span><br><span class="line"><span class="comment"># no logging because any errors will be specially logged by</span></span><br><span class="line"><span class="comment">#   subprocess_post_check_handle_pip_error()</span></span><br><span class="line">pip_process = run_subprocess(cmd, log_stdout=<span class="literal">False</span>, log_stderr=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后最终还是调用 <code>venv.run_app</code> 方法来执行。到这里 <code>run</code> 命令的主体就学习完了。下面补充几个过程中值得注意的知识点。</p>
+<h2 id="知识点-shared-library"><a href="#知识点-shared-library" class="headerlink" title="知识点: shared library"></a>知识点: shared library</h2><p>在 <code>create_venv</code> 函数中，除了创建虚拟目录外，还创建了 <code>share libs</code>, share libs 是一个所有 pipx 的虚拟目录都可以共享的目录，有点像全局安装目录。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># venv.py</span></span><br><span class="line">shared_libs.create(self.verbose)</span><br><span class="line">pipx_pth = get_site_packages(self.python_path) / PIPX_SHARED_PTH</span><br><span class="line"><span class="comment"># write path pointing to the shared libs site-packages directory</span></span><br><span class="line"><span class="comment"># example pipx_pth location:</span></span><br><span class="line"><span class="comment">#   ~/.local/pipx/venvs/black/lib/python3.8/site-packages/pipx_shared.pth</span></span><br><span class="line"><span class="comment"># example shared_libs.site_packages location:</span></span><br><span class="line"><span class="comment">#   ~/.local/pipx/shared/lib/python3.6/site-packages</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># https://docs.python.org/3/library/site.html</span></span><br><span class="line"><span class="comment"># A path configuration file is a file whose name has the form &#x27;name.pth&#x27;.</span></span><br><span class="line"><span class="comment"># its contents are additional items (one per line) to be added to sys.path</span></span><br><span class="line">pipx_pth.write_text(<span class="string">f&quot;<span class="subst">&#123;shared_libs.site_packages&#125;</span>\n&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># shared_libs.py</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span>(<span class="params">self, verbose: <span class="built_in">bool</span> = <span class="literal">False</span></span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.is_valid:</span><br><span class="line">        <span class="keyword">with</span> animate(<span class="string">&quot;creating shared libraries&quot;</span>, <span class="keyword">not</span> verbose):</span><br><span class="line">            create_process = run_subprocess(</span><br><span class="line">                [DEFAULT_PYTHON, <span class="string">&quot;-m&quot;</span>, <span class="string">&quot;venv&quot;</span>, <span class="string">&quot;--clear&quot;</span>, self.root]</span><br><span class="line">            )</span><br><span class="line">        subprocess_post_check(create_process)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ignore installed packages to ensure no unexpected patches from the OS vendor</span></span><br><span class="line">        <span class="comment"># are used</span></span><br><span class="line">        self.upgrade(pip_args=[<span class="string">&quot;--force-reinstall&quot;</span>], verbose=verbose)</span><br></pre></td></tr></table></figure>
+
+<p>pipx share_libs 的目录是 <code>~/.local/pipx/shared</code>, 进入 <code>shared_libs.create</code> 方法，用默认的 python 解释器在 <code>~/.local/pipx/shared</code> 目录下创建了虚拟目录。最后在 venv 的 <code>site_packages</code> 下的 <code>pipx_shared.pth</code> 文件里写入了 share_libs 的 <code>site_packages</code> 目录。这样在虚拟目录中运行 app 时，遇到模块加载时也会去 share_libs 搜索。其中有关 share_libs 可以参考源码给出的<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/site.html">文档连接</a></p>
+<h2 id="知识点-获取系统默认-python-解释器路径"><a href="#知识点-获取系统默认-python-解释器路径" class="headerlink" title="知识点: 获取系统默认 python 解释器路径"></a>知识点: 获取系统默认 python 解释器路径</h2><p><code>Venv</code> 类中创建虚拟目录的默认 python 解释器是如何获取的呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_sys_executable</span>() -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">    <span class="keyword">if</span> WINDOWS:</span><br><span class="line">        <span class="keyword">return</span> _find_default_windows_python()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> sys.executable</span><br></pre></td></tr></table></figure>
+
+<p>其中 window 系统的获取比较繁琐，主要是处理几类兼容性问题，而 POSIX 系统则直接取 <code>sys.executable</code> 的值就可以了。</p>
+<h2 id="知识点-移除过期文件夹"><a href="#知识点-移除过期文件夹" class="headerlink" title="知识点: 移除过期文件夹"></a>知识点: 移除过期文件夹</h2><p>源码中判断过期的函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_is_temporary_venv_expired</span>(<span class="params">venv_dir: Path</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">    created_time_sec = venv_dir.stat().st_ctime</span><br><span class="line">    current_time_sec = time.mktime(datetime.datetime.now().timetuple())</span><br><span class="line">    age = current_time_sec - created_time_sec</span><br><span class="line">    expiration_threshold_sec = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * TEMP_VENV_EXPIRATION_THRESHOLD_DAYS</span><br><span class="line">    <span class="keyword">return</span> age &gt; expiration_threshold_sec <span class="keyword">or</span> (venv_dir / VENV_EXPIRED_FILENAME).exists()</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>venv_dir.stat().st_ctime</code> 返回的是最后一次 metadata 改变的时间，这里可以认为是文件夹被创建的时间。关于 <code>Path.stat()</code> 返回的数据可以参考官方<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/os.html#os.stat_result">文档</a></p>
+<p>另外获取当前时间戳的函数是 <code>time.mktime(datetime.datetime.now().timetuple())</code></p>
+<h2 id="知识点-获取-site-package-路径"><a href="#知识点-获取-site-package-路径" class="headerlink" title="知识点: 获取 site-package 路径"></a>知识点: 获取 site-package 路径</h2><p>源码用的方法如下, 这里获取的是特定 python 解释器的 site-package：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_site_packages</span>(<span class="params">python: Path</span>) -&gt; Path:</span></span><br><span class="line">    output = run_subprocess(</span><br><span class="line">        [python, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;import sysconfig; print(sysconfig.get_path(&#x27;purelib&#x27;))&quot;</span>],</span><br><span class="line">        capture_stderr=<span class="literal">False</span>,</span><br><span class="line">    ).stdout</span><br><span class="line">    path = Path(output.strip())</span><br><span class="line">    path.mkdir(parents=<span class="literal">True</span>, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> path</span><br></pre></td></tr></table></figure>
+
+<p>待续…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/03/python/pipx_3/" data-id="ckt5k3khl001wb6n4hkn6hgf6" data-title="pipx 源码解析【3】- pipx run" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/venv/" rel="tag">venv</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/02/python/pipx_2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">pipx 源码解析【2】- argparse 模块</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/venv/" rel="tag">venv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" rel="tag">子进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 12.5px;">javascript</a> <a href="/tags/ngix/" style="font-size: 10px;">ngix</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 12.5px;">service-worker</a> <a href="/tags/venv/" style="font-size: 15px;">venv</a> <a href="/tags/webpack/" style="font-size: 15px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 17.5px;">力扣</a> <a href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">子进程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 15px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 17.5px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/03/python/pipx_3/">pipx 源码解析【3】- pipx run</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/02/python/pipx_2/">pipx 源码解析【2】- argparse 模块</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/31/python/pipx/">pipx 源码解析【1】</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/21/python/records/">python records 源码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/12/others/reverse_proxy/">什么是反向代理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Chris Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
