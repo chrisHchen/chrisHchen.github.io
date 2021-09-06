@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>pipx 源码解析【4】- pipx install | Chris Chen&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="用 pipx 安装 app上一篇学习了 run 命令, 这一篇主要学习下 install 命令的部分, 位置在 src&#x2F;pipx&#x2F;commands&#x2F;install.py 这部分的代码相对较直接，从整个 install 函数看主要分如下步骤：  从 package_spec 解析出 app 的 package_name 获取 venv 路径。假设我们的 app 名字是 cowsay, 获取的 ven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pipx 源码解析【4】- pipx install">
+<meta property="og:url" content="http://example.com/2021/09/06/python/pipx_4/index.html">
+<meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="用 pipx 安装 app上一篇学习了 run 命令, 这一篇主要学习下 install 命令的部分, 位置在 src&#x2F;pipx&#x2F;commands&#x2F;install.py 这部分的代码相对较直接，从整个 install 函数看主要分如下步骤：  从 package_spec 解析出 app 的 package_name 获取 venv 路径。假设我们的 app 名字是 cowsay, 获取的 ven">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-06T20:12:38.000Z">
+<meta property="article:modified_time" content="2021-09-06T13:55:45.257Z">
+<meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="venv">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="https://assets.imedao.com/images/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Chris Chen&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">welcome to my blog</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-python/pipx_4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/06/python/pipx_4/" class="article-date">
+  <time class="dt-published" datetime="2021-09-06T20:12:38.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      pipx 源码解析【4】- pipx install
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="用-pipx-安装-app"><a href="#用-pipx-安装-app" class="headerlink" title="用 pipx 安装 app"></a>用 pipx 安装 app</h2><p>上一篇学习了 <code>run</code> 命令, 这一篇主要学习下 <code>install</code> 命令的部分, 位置在 <code>src/pipx/commands/install.py</code></p>
+<p>这部分的代码相对较直接，从整个 <code>install</code> 函数看主要分如下步骤：</p>
+<ol>
+<li>从 <code>package_spec</code> 解析出 app 的 <code>package_name</code></li>
+<li>获取 <code>venv</code> 路径。假设我们的 app 名字是 <code>cowsay</code>, 获取的 <code>venv_dir</code> 路径就是 <code>~/.local/pipx/venvs/cowsay</code></li>
+<li>判断 <code>venv_dir</code> 是否已经存在</li>
+<li>如果已经存在，且有 <code>force</code> 选项，则提示用户 <code>venv</code> 目录已经存在，安装将覆盖原有目录内容。如果没有 <code>force</code> 选项，则提示用户后退出程序</li>
+<li>运行 <code>venv.create_venv</code> 创建虚拟目录</li>
+<li>运行 <code>venv.install_package</code> 安装 app</li>
+<li>如果上面都没有出错，则执行 <code>run_post_install_actions</code> 方法处理安装后的收尾工作，如果有一步报错，则执行 <code>venv.remove_venv</code> 删除虚拟目录。 </li>
+</ol>
+<p><strong>注意</strong>：上面 5， 6 两步在上一篇 <code>run</code> 命令中已经提到过了。只是 <code>run</code> 是在一个路径带 hash 值的临时虚拟目录里安装的（假设 hash 值是 abc 时:<code>~/.local/pipx/.cache/abc</code>），而 <code>install</code> 是以 package_name 命名的路径安装的: <code>~/.local/pipx/venvs/cowsay</code>。</p>
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">install</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    venv_dir: <span class="type">Optional</span>[Path],</span></span></span><br><span class="line"><span class="params"><span class="function">    package_name: <span class="type">Optional</span>[<span class="built_in">str</span>],</span></span></span><br><span class="line"><span class="params"><span class="function">    package_spec: <span class="built_in">str</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    local_bin_dir: Path,</span></span></span><br><span class="line"><span class="params"><span class="function">    python: <span class="built_in">str</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    pip_args: <span class="type">List</span>[<span class="built_in">str</span>],</span></span></span><br><span class="line"><span class="params"><span class="function">    venv_args: <span class="type">List</span>[<span class="built_in">str</span>],</span></span></span><br><span class="line"><span class="params"><span class="function">    verbose: <span class="built_in">bool</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    *,</span></span></span><br><span class="line"><span class="params"><span class="function">    force: <span class="built_in">bool</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    include_dependencies: <span class="built_in">bool</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    suffix: <span class="built_in">str</span> = <span class="string">&quot;&quot;</span>,</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) -&gt; ExitCode:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Returns pipx exit code.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># package_spec is anything pip-installable, including package_name, vcs spec,</span></span><br><span class="line">    <span class="comment">#   zip file, or tar.gz file.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> package_name <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        package_name = package_name_from_spec(</span><br><span class="line">            package_spec, python, pip_args=pip_args, verbose=verbose</span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">if</span> venv_dir <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        venv_container = VenvContainer(constants.PIPX_LOCAL_VENVS)</span><br><span class="line">        venv_dir = venv_container.get_venv_dir(<span class="string">f&quot;<span class="subst">&#123;package_name&#125;</span><span class="subst">&#123;suffix&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        exists = venv_dir.exists() <span class="keyword">and</span> <span class="built_in">next</span>(venv_dir.iterdir())</span><br><span class="line">    <span class="keyword">except</span> StopIteration:</span><br><span class="line">        exists = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    venv = Venv(venv_dir, python=python, verbose=verbose)</span><br><span class="line">    <span class="keyword">if</span> exists:</span><br><span class="line">        <span class="keyword">if</span> force:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Installing to existing venv <span class="subst">&#123;venv.name!r&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(</span><br><span class="line">                pipx_wrap(</span><br><span class="line">                    <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                    <span class="subst">&#123;venv.name!r&#125;</span> already seems to be installed. Not modifying</span></span><br><span class="line"><span class="string">                    existing installation in <span class="subst">&#123;<span class="built_in">str</span>(venv_dir)!r&#125;</span>. Pass &#x27;--force&#x27;</span></span><br><span class="line"><span class="string">                    to force installation.</span></span><br><span class="line"><span class="string">                    &quot;&quot;&quot;</span></span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> EXIT_CODE_INSTALL_VENV_EXISTS</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        venv.create_venv(venv_args, pip_args)</span><br><span class="line">        venv.install_package(</span><br><span class="line">            package_name=package_name,</span><br><span class="line">            package_or_url=package_spec,</span><br><span class="line">            pip_args=pip_args,</span><br><span class="line">            include_dependencies=include_dependencies,</span><br><span class="line">            include_apps=<span class="literal">True</span>,</span><br><span class="line">            is_main_package=<span class="literal">True</span>,</span><br><span class="line">            suffix=suffix,</span><br><span class="line">        )</span><br><span class="line">        run_post_install_actions(</span><br><span class="line">            venv,</span><br><span class="line">            package_name,</span><br><span class="line">            local_bin_dir,</span><br><span class="line">            venv_dir,</span><br><span class="line">            include_dependencies,</span><br><span class="line">            force=force,</span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">except</span> (Exception, KeyboardInterrupt):</span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line">        venv.remove_venv()</span><br><span class="line">        <span class="keyword">raise</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Any failure to install will raise PipxError, otherwise success</span></span><br><span class="line">    <span class="keyword">return</span> EXIT_CODE_OK</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="安装完成后的收尾工作"><a href="#安装完成后的收尾工作" class="headerlink" title="安装完成后的收尾工作"></a>安装完成后的收尾工作</h2><p>第 7 步的收尾工作里 <code>run_post_install_actions</code> 做了什么? 这里我个人理解主要做了如下几步:</p>
+<ol>
+<li>检查安装的包中有没有可执行文件，因为 <code>pipx</code> 是为了安装 app 而不是安装 library 的。如果安装的内容里没有可执行文件，则 raise error。如果 app 没有可执行文件但它的依赖中有可执行文件，则提示用户添加 <code>--include-deps</code> 选项。</li>
+<li>将安装的 app 暴露到全局 <code>expose_apps_globally</code>。</li>
+<li>检查用户的 <code>PATH</code> 环境变量，如果其中没有 pipx 的 local bin 路径 <code>.local/bin</code> ，则提示用户手动添加或者运行 <code>pipx ensurepath</code> 自动为用户添加</li>
+</ol>
+<p>其中 <code>expose_apps_globally</code> 源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">expose_apps_globally</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    local_bin_dir: Path, app_paths: <span class="type">List</span>[Path], *, force: <span class="built_in">bool</span>, suffix: <span class="built_in">str</span> = <span class="string">&quot;&quot;</span></span></span></span><br><span class="line"><span class="params"><span class="function"></span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> can_symlink(local_bin_dir):</span><br><span class="line">        _copy_package_apps(local_bin_dir, app_paths, suffix=suffix)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        _symlink_package_apps(local_bin_dir, app_paths, force=force, suffix=suffix)</span><br></pre></td></tr></table></figure>
+
+<p>默认认为 unix 系统都可以进行软链接，所以在不能软连的系统上直接 copy，可以的则软连。这里 copy 用的是 <code>shutil.copy</code>, 软连用的是 <code>path.symlink_to</code> 函数。</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p><code>pathlib</code> 里的 <code>path</code> 模块使用的时候有几个注意点:</p>
+<ol>
+<li>实例化用户主目录时要用 <code>Path.home() / abc</code>， 不能直接 <code>Path(&#39;~/abc&#39;)</code></li>
+<li>对于指向软连的 path，<code>symlink_path.unlink</code> 是将软连删除</li>
+<li>对于软连和源文件 <code>symlink_path.samefile(source_path)</code> 返回 True</li>
+<li>判断是否是软连 <code>path.is_symlink()</code></li>
+<li>对于指向软连的 path 调用 <code>symlink_path.exists()</code> 会判断软连和源文件是否都存在，只要有一个不存在，则返回 False</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/06/python/pipx_4/" data-id="ckt8pifvr00209bnkd8oj4hyz" data-title="pipx 源码解析【4】- pipx install" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/venv/" rel="tag">venv</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/03/python/pipx_3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">pipx 源码解析【3】- pipx run</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css-in-js/" rel="tag">css-in-js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ngix/" rel="tag">ngix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service-worker/" rel="tag">service-worker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/venv/" rel="tag">venv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" rel="tag">子进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/css-in-js/" style="font-size: 10px;">css-in-js</a> <a href="/tags/javascript/" style="font-size: 12px;">javascript</a> <a href="/tags/ngix/" style="font-size: 10px;">ngix</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/service-worker/" style="font-size: 12px;">service-worker</a> <a href="/tags/venv/" style="font-size: 16px;">venv</a> <a href="/tags/webpack/" style="font-size: 14px;">webpack</a> <a href="/tags/%E5%8A%9B%E6%89%A3/" style="font-size: 18px;">力扣</a> <a href="/tags/%E5%AD%90%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">子进程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" style="font-size: 14px;">源码解析</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 18px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/06/python/pipx_4/">pipx 源码解析【4】- pipx install</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/03/python/pipx_3/">pipx 源码解析【3】- pipx run</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/02/python/pipx_2/">pipx 源码解析【2】- argparse 模块</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/31/python/pipx/">pipx 源码解析【1】</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/21/python/records/">python records 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Chris Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
