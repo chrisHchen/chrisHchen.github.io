@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>Category: javascript | Chris Chen&#39;s Blog</title>
+  <title>pipx 源码解析【5】- pipx inject | Chris Chen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Chris Chen&#39;s Blog">
-<meta property="og:url" content="http://example.com/categories/javascript/index.html">
+  <meta name="description" content="pipx injectpipx inject 命令用会往存在的虚拟环境中安装指定的包。语法是 pipx inject abc --dependencies depA depB。这个命令会把 depA 和 depB 安装到已经存在的 abc 虚拟环境中。 inject.py和之前的命令一样，inject 会调用 command&#x2F;inject.py 模块。最终调用的是 inject_dep 方法: 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pipx 源码解析【5】- pipx inject">
+<meta property="og:url" content="http://example.com/2021/09/14/python/pipx_5/index.html">
 <meta property="og:site_name" content="Chris Chen&#39;s Blog">
+<meta property="og:description" content="pipx injectpipx inject 命令用会往存在的虚拟环境中安装指定的包。语法是 pipx inject abc --dependencies depA depB。这个命令会把 depA 和 depB 安装到已经存在的 abc 虚拟环境中。 inject.py和之前的命令一样，inject 会调用 command&#x2F;inject.py 模块。最终调用的是 inject_dep 方法: 1">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-14T21:12:38.000Z">
+<meta property="article:modified_time" content="2021-09-14T13:01:55.431Z">
 <meta property="article:author" content="Chris Chen">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="venv">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Chris Chen's Blog" type="application/atom+xml">
@@ -73,230 +79,70 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/" class="archive-article-date">
-  <time class="dt-published" datetime="2020-05-11T20:05:50.000Z" itemprop="datePublished">May 11</time>
+        <section id="main"><article id="post-python/pipx_5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/14/python/pipx_5/" class="article-date">
+  <time class="dt-published" datetime="2021-09-14T21:12:38.000Z" itemprop="datePublished">2021-09-14</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      pipx 源码解析【5】- pipx inject
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
+    <div class="e-content article-entry" itemprop="articleBody">
       
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/11/05/javascript/react-hook-indepth/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-11-05T20:12:20.000Z" itemprop="datePublished">Nov 5</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/11/05/javascript/react-hook-indepth/">React Hook 工作原理</a>
-    </h1>
-  
+        <h2 id="pipx-inject"><a href="#pipx-inject" class="headerlink" title="pipx inject"></a>pipx inject</h2><p><code>pipx inject</code> 命令用会往存在的虚拟环境中安装指定的包。语法是 <code>pipx inject abc --dependencies depA depB</code>。这个命令会把 <code>depA</code> 和 <code>depB</code> 安装到已经存在的 <code>abc</code> 虚拟环境中。</p>
+<h2 id="inject-py"><a href="#inject-py" class="headerlink" title="inject.py"></a>inject.py</h2><p>和之前的命令一样，inject 会调用 <code>command/inject.py</code> 模块。最终调用的是 <code>inject_dep</code> 方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">all_success = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> dep <span class="keyword">in</span> package_specs:</span><br><span class="line">        all_success &amp;= inject_dep(</span><br><span class="line">            venv_dir,</span><br><span class="line">            <span class="literal">None</span>,</span><br><span class="line">            dep,</span><br><span class="line">            pip_args,</span><br><span class="line">            verbose=verbose,</span><br><span class="line">            include_apps=include_apps,</span><br><span class="line">            include_dependencies=include_dependencies,</span><br><span class="line">            force=force,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> EXIT_CODE_OK <span class="keyword">if</span> all_success <span class="keyword">else</span> EXIT_CODE_INJECT_ERROR</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/01/05/javascript/service-worker-example/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-01-05T10:30:00.000Z" itemprop="datePublished">Jan 5</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/05/javascript/service-worker-example/">Service-worker 使用案例</a>
-    </h1>
-  
+<p><code>inject_dep</code> 做了如下几步：</p>
+<ol>
+<li>判断 <code>inject</code> 的目标虚拟环境是否存在。</li>
+<li>运行 <code>venv.install_package</code> 安装 app</li>
+<li>如果上面都没有出错，则执行 <code>run_post_install_actions</code> 方法处理安装后的收尾工作，如果有一步报错，则执行 <code>venv.remove_venv</code> 删除虚拟目录。</li>
+</ol>
+<p>这里的 2，3 两步在上一篇的 <code>pipx install</code> 命令已经学习过了，所以从这个层面看，inject 和 install 的差别只是 inject 会指定一个存在的虚拟目录，而 install 是创建一个新的 <code>venv</code></p>
+<p>inject 命令不复杂，所涉及的知识点也基本上在之前 <code>install</code> 和 <code>run</code> 两个命令中提到过了。</p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/01/04/javascript/web-worker-vs-service-worker/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-01-04T19:32:00.000Z" itemprop="datePublished">Jan 4</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/04/javascript/web-worker-vs-service-worker/">Web Worker vs Service Worker</a>
-    </h1>
-  
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/14/python/pipx_5/" data-id="cktk343ig002493na8u96bgj0" data-title="pipx 源码解析【5】- pipx inject" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/venv/" rel="tag">venv</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/08/25/javascript/tree-shaking/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-08-25T10:16:01.000Z" itemprop="datePublished">Aug 25</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/25/javascript/tree-shaking/">简析 Tree-Shaking</a>
-    </h1>
   
+    <a href="/2021/09/06/python/pipx_4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">pipx 源码解析【4】- pipx install</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/06/10/javascript/styled-component/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-06-10T21:16:21.000Z" itemprop="datePublished">Jun 10</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/10/javascript/styled-component/">styled-component 工作原理</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/05/20/javascript/momoize-one/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-05-20T23:13:01.000Z" itemprop="datePublished">May 20</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/20/javascript/momoize-one/">momoize-one 源码解析</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/04/24/javascript/webpack-loader/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-04-24T23:05:50.000Z" itemprop="datePublished">Apr 24</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/24/javascript/webpack-loader/">写一个 webpack loader</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/16/javascript/redux/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-03-16T21:58:38.000Z" itemprop="datePublished">Mar 16</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/16/javascript/redux/">redux 源码分析【4.0.0-beta.2】</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/02/25/javascript/fastdom/" class="archive-article-date">
-  <time class="dt-published" datetime="2018-02-25T20:16:21.000Z" itemprop="datePublished">Feb 25</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/25/javascript/fastdom/">fastdom 源码解析</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
 
 </section>

@@ -75,6 +75,62 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-python/pipx_5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/14/python/pipx_5/" class="article-date">
+  <time class="dt-published" datetime="2021-09-14T21:12:38.000Z" itemprop="datePublished">2021-09-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/14/python/pipx_5/">pipx 源码解析【5】- pipx inject</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="pipx-inject"><a href="#pipx-inject" class="headerlink" title="pipx inject"></a>pipx inject</h2><p><code>pipx inject</code> 命令用会往存在的虚拟环境中安装指定的包。语法是 <code>pipx inject abc --dependencies depA depB</code>。这个命令会把 <code>depA</code> 和 <code>depB</code> 安装到已经存在的 <code>abc</code> 虚拟环境中。</p>
+<h2 id="inject-py"><a href="#inject-py" class="headerlink" title="inject.py"></a>inject.py</h2><p>和之前的命令一样，inject 会调用 <code>command/inject.py</code> 模块。最终调用的是 <code>inject_dep</code> 方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">all_success = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> dep <span class="keyword">in</span> package_specs:</span><br><span class="line">        all_success &amp;= inject_dep(</span><br><span class="line">            venv_dir,</span><br><span class="line">            <span class="literal">None</span>,</span><br><span class="line">            dep,</span><br><span class="line">            pip_args,</span><br><span class="line">            verbose=verbose,</span><br><span class="line">            include_apps=include_apps,</span><br><span class="line">            include_dependencies=include_dependencies,</span><br><span class="line">            force=force,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> EXIT_CODE_OK <span class="keyword">if</span> all_success <span class="keyword">else</span> EXIT_CODE_INJECT_ERROR</span><br></pre></td></tr></table></figure>
+
+<p><code>inject_dep</code> 做了如下几步：</p>
+<ol>
+<li>判断 <code>inject</code> 的目标虚拟环境是否存在。</li>
+<li>运行 <code>venv.install_package</code> 安装 app</li>
+<li>如果上面都没有出错，则执行 <code>run_post_install_actions</code> 方法处理安装后的收尾工作，如果有一步报错，则执行 <code>venv.remove_venv</code> 删除虚拟目录。</li>
+</ol>
+<p>这里的 2，3 两步在上一篇的 <code>pipx install</code> 命令已经学习过了，所以从这个层面看，inject 和 install 的差别只是 inject 会指定一个存在的虚拟目录，而 install 是创建一个新的 <code>venv</code></p>
+<p>inject 命令不复杂，所涉及的知识点也基本上在之前 <code>install</code> 和 <code>run</code> 两个命令中提到过了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/09/14/python/pipx_5/" data-id="cktk343ig002493na8u96bgj0" data-title="pipx 源码解析【5】- pipx inject" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/venv/" rel="tag">venv</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-python/pipx_4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/06/python/pipx_4/" class="article-date">
@@ -121,7 +177,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/09/06/python/pipx_4/" data-id="ckt8pifvr00209bnkd8oj4hyz" data-title="pipx 源码解析【4】- pipx install" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/09/06/python/pipx_4/" data-id="cktk343id002093naf6az0ft7" data-title="pipx 源码解析【4】- pipx install" class="article-share-link">Share</a>
       
       
       
@@ -176,7 +232,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/09/03/python/pipx_3/" data-id="ckt8pifvn001w9bnkdsa73l52" data-title="pipx 源码解析【3】- pipx run" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/09/03/python/pipx_3/" data-id="cktk343i8001w93na79xy9rjg" data-title="pipx 源码解析【3】- pipx run" class="article-share-link">Share</a>
       
       
       
@@ -229,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/09/02/python/pipx_2/" data-id="ckt8pifvm001s9bnk41aier1h" data-title="pipx 源码解析【2】- argparse 模块" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/09/02/python/pipx_2/" data-id="cktk343i7001s93na2j7x7ejh" data-title="pipx 源码解析【2】- argparse 模块" class="article-share-link">Share</a>
       
       
       
@@ -281,7 +337,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/08/31/python/pipx/" data-id="ckt8pifvk001o9bnk4olf1gup" data-title="pipx 源码解析【1】" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/08/31/python/pipx/" data-id="cktk343i5001o93na48d81uv0" data-title="pipx 源码解析【1】" class="article-share-link">Share</a>
       
       
       
@@ -334,7 +390,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/08/21/python/records/" data-id="ckt8pifwb003t9bnkdz55atm4" data-title="python records 源码解析" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/08/21/python/records/" data-id="cktk343j7003y93na1qwi1w11" data-title="python records 源码解析" class="article-share-link">Share</a>
       
       
       
@@ -386,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/12/others/reverse_proxy/" data-id="ckt8pifvf001b9bnk06s26pxc" data-title="什么是反向代理" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/12/others/reverse_proxy/" data-id="cktk343hz001b93nadktv8mq0" data-title="什么是反向代理" class="article-share-link">Share</a>
       
       
       
@@ -454,7 +510,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/20/algorithm/regular_expression_matching/" data-id="ckt8pifus00049bnkh61d4ycd" data-title="正则表达式匹配" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/20/algorithm/regular_expression_matching/" data-id="cktk343h7000493na2754aju7" data-title="正则表达式匹配" class="article-share-link">Share</a>
       
       
       
@@ -510,7 +566,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/08/20/algorithm/string_2_interge/" data-id="ckt8pifuu00069bnk7g2p1bqk" data-title="字符串转换整数 (atoi)" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/08/20/algorithm/string_2_interge/" data-id="cktk343ha000693na1w3o5adw" data-title="字符串转换整数 (atoi)" class="article-share-link">Share</a>
       
       
       
@@ -561,74 +617,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/07/08/algorithm/reverse_integer/" data-id="ckt8pifut00059bnkftn964hy" data-title="整数反转" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/07/08/algorithm/reverse_integer/" data-id="cktk343h8000593nafcon6lpa" data-title="整数反转" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript/webpack-loader-vs-plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/" class="article-date">
-  <time class="dt-published" datetime="2020-05-11T20:05:50.000Z" itemprop="datePublished">2020-05-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/javascript/">javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/05/11/javascript/webpack-loader-vs-plugin/">webpack loader vs plugin</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>webpack 配置文件中最常见同时也是配置最繁琐的就是 loader 和 plugin。本文是我个人对 loader 和 plugin 理解的总结。可能有不准确的地方，后续会再次修改。</p>
-<h2 id="什么是-Loader"><a href="#什么是-Loader" class="headerlink" title="什么是 Loader ?"></a>什么是 Loader ?</h2><p>Loader 翻译过来可以叫<strong>加载器</strong>。官方文档对 loader 的<a target="_blank" rel="noopener" href="https://webpack.js.org/concepts/#loaders">解释原文</a>如下:</p>
-<blockquote style='font-size:12px;text-align:left'>
-Out of the box, webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
-
-<p>Loaders are transformations that are applied to the source code of a module. They allow you to pre-process files as you import or “load” them. Thus, loaders are kind of like “tasks” in other build tools and provide a powerful way to handle front-end build steps. Loaders can transform files from a different language (like TypeScript) to JavaScript or load inline images as data URLs. Loaders even allow you to do things like import CSS files directly from your JavaScript modules!</p>
-</blockquote>
-
-<p><strong>loader 是一个转换器，将 A 文件进行编译成 B 文件，属于单纯的文件转换过程</strong>；</p>
-<p>我总结为如下几点：</p>
-<ol>
-<li>loader 需要处理的是除了 js 和 json 之外的文件类型。</li>
-<li>loader 将这类文件转换(transform)为应用可以消费的合法模块。</li>
-</ol>
-<p>第一点很好理解。第二点就有点抽象了，什么是“应用可以消费的合法模块”呢？</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/11/javascript/webpack-loader-vs-plugin/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/05/11/javascript/webpack-loader-vs-plugin/" data-id="ckt8pifvc00159bnk40ew7nys" data-title="webpack loader vs plugin" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
 
     </footer>
   </div>
@@ -695,6 +688,10 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
       <ul>
         
           <li>
+            <a href="/2021/09/14/python/pipx_5/">pipx 源码解析【5】- pipx inject</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/06/python/pipx_4/">pipx 源码解析【4】- pipx install</a>
           </li>
         
@@ -708,10 +705,6 @@ Out of the box, webpack only understands JavaScript and JSON files. Loaders allo
         
           <li>
             <a href="/2021/08/31/python/pipx/">pipx 源码解析【1】</a>
-          </li>
-        
-          <li>
-            <a href="/2021/08/21/python/records/">python records 源码解析</a>
           </li>
         
       </ul>
